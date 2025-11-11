@@ -1,8 +1,8 @@
-import { selectThemeMode } from "@/app/app-slice"
+import {selectThemeMode} from "@/app/app-slice"
 import {useAppDispatch, useAppSelector} from "@/common/hooks"
-import { getTheme } from "@/common/theme"
-import { type LoginInputs, loginSchema } from "@/features/auth/lib/schemas"
-import { zodResolver } from "@hookform/resolvers/zod"
+import {getTheme} from "@/common/theme"
+import {type LoginInputs, loginSchema} from "@/features/auth/lib/schemas"
+import {zodResolver} from "@hookform/resolvers/zod"
 import Button from "@mui/material/Button"
 import Checkbox from "@mui/material/Checkbox"
 import FormControl from "@mui/material/FormControl"
@@ -11,16 +11,24 @@ import FormGroup from "@mui/material/FormGroup"
 import FormLabel from "@mui/material/FormLabel"
 import Grid from "@mui/material/Grid"
 import TextField from "@mui/material/TextField"
-import { Controller, type SubmitHandler, useForm } from "react-hook-form"
+import {Controller, type SubmitHandler, useForm} from "react-hook-form"
 import styles from "./Login.module.css"
-import {authSlice, loginTC,selectIsLoggedIn} from "@/features/auth/model/auth-slice";
-import {selectTodolists} from "@/features/todolists/model/todolists-slice";
+import {loginTC, selectIsLoggedIn} from "@/features/auth/model/auth-slice";
+import {Navigate, useNavigate} from "react-router";
+import {Path} from "@/common/routing";
+import {useEffect} from "react";
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
-  const selectIsLoggedIn2 = useAppSelector(selectIsLoggedIn)
+  const IsLoggedIn = useAppSelector(selectIsLoggedIn)
   const dispatch = useAppDispatch()
   const theme = getTheme(themeMode)
+  let navigate = useNavigate()
+  // useEffect(()=>{
+  //   if(IsLoggedIn){
+  //     navigate(Path.Main)
+  //   }
+  // },[IsLoggedIn])
 
   const {
     register,
@@ -35,9 +43,17 @@ export const Login = () => {
 
   const onSubmit: SubmitHandler<LoginInputs> = (data) => {
     dispatch(loginTC(data))
+        .unwrap()
+        .then((res)=>{
+      if(res.isLoggedIn){
+        navigate(Path.Main)
+      }
+    })
+        .catch((er)=>{
+          alert(er)
+        })
    // reset()
   }
-
   return (
     <Grid container justifyContent={"center"}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -92,3 +108,4 @@ export const Login = () => {
     </Grid>
   )
 }
+
