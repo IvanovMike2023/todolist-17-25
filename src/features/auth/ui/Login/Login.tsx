@@ -1,4 +1,4 @@
-import {selectThemeMode} from "@/app/app-slice"
+import {selectThemeMode, setAppErrorAC} from "@/app/app-slice"
 import {useAppDispatch, useAppSelector} from "@/common/hooks"
 import {getTheme} from "@/common/theme"
 import {type LoginInputs, loginSchema} from "@/features/auth/lib/schemas"
@@ -13,22 +13,15 @@ import Grid from "@mui/material/Grid"
 import TextField from "@mui/material/TextField"
 import {Controller, type SubmitHandler, useForm} from "react-hook-form"
 import styles from "./Login.module.css"
-import {loginTC, selectIsLoggedIn} from "@/features/auth/model/auth-slice";
-import {Navigate, useNavigate} from "react-router";
+import {loginTC} from "@/features/auth/model/auth-slice";
+import {useNavigate} from "react-router";
 import {Path} from "@/common/routing";
-import {useEffect} from "react";
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
-  const IsLoggedIn = useAppSelector(selectIsLoggedIn)
   const dispatch = useAppDispatch()
   const theme = getTheme(themeMode)
   let navigate = useNavigate()
-  // useEffect(()=>{
-  //   if(IsLoggedIn){
-  //     navigate(Path.Main)
-  //   }
-  // },[IsLoggedIn])
 
   const {
     register,
@@ -49,8 +42,10 @@ export const Login = () => {
         navigate(Path.Main)
       }
     })
-        .catch((er)=>{
-          alert(er)
+        .catch((error)=>{
+          console.log(error)
+         dispatch(setAppErrorAC(error))
+          //handleServerAppError(dispatch, error)
         })
    // reset()
   }

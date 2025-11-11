@@ -3,5 +3,8 @@ import type { BaseResponse } from "@/common/types"
 export const loginApi = {
     authLogin(payload: BaseResponse) {
         return instance.post<BaseResponse <{ userId: string,captcha:string }>>(`/auth/login`,payload)
+    },
+    deleteLogin() {
+        return instance.delete(`/auth/login`)
     }
 }
