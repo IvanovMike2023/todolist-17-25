@@ -23,7 +23,6 @@ export const Header = () => {
     dispatch(changeThemeModeAC({ themeMode: themeMode === "light" ? "dark" : "light" }))
   }
   const login = useAppSelector(getLogin)
-  console.log(login)
   const logoutHandler=()=>{
   dispatch(logoutTC())
 }

@@ -87,7 +87,6 @@ export const authSlice = createAppSlice({
                     fulfilled: (state, action) => {
                         state.isLoggedIn = action.payload.isLoggedIn
                         state.login = action.payload.login
-
                     },
                 }
             )

@@ -5,9 +5,9 @@ export const loginApi = {
         return instance.post<BaseResponse <{ userId: string,captcha:string }>>(`/auth/login`,payload)
     },
     deleteLogin() {
-        return instance.delete(`/auth/login`)
+        return instance.delete<BaseResponse>(`/auth/login`)
     },
     me() {
-        return instance.get<BaseResponse>(`/auth/me`)
+        return instance.get<BaseResponse <{id:number;email:string;login:string}>>(`/auth/me`)
     }
 }

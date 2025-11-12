@@ -13,8 +13,8 @@ import Grid from "@mui/material/Grid"
 import TextField from "@mui/material/TextField"
 import {Controller, type SubmitHandler, useForm} from "react-hook-form"
 import styles from "./Login.module.css"
-import {loginTC} from "@/features/auth/model/auth-slice";
-import {useNavigate} from "react-router";
+import {loginTC, selectIsLoggedIn} from "@/features/auth/model/auth-slice";
+import {Navigate, useNavigate} from "react-router";
 import {Path} from "@/common/routing";
 
 export const Login = () => {
@@ -22,6 +22,7 @@ export const Login = () => {
   const dispatch = useAppDispatch()
   const theme = getTheme(themeMode)
   let navigate = useNavigate()
+  const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
   const {
     register,
@@ -36,18 +37,22 @@ export const Login = () => {
 
   const onSubmit: SubmitHandler<LoginInputs> = (data) => {
     dispatch(loginTC(data))
-        .unwrap()
-        .then((res)=>{
-      if(res.isLoggedIn){
-        navigate(Path.Main)
-      }
-    })
-        .catch((error)=>{
-          console.log(error)
-         dispatch(setAppErrorAC(error))
-          //handleServerAppError(dispatch, error)
-        })
+    //     .unwrap()
+    //     .then((res)=>{
+    //   if(res.isLoggedIn){
+    //     navigate(Path.Main)
+    //   }
+    // })
+    //     .catch((error)=>{
+    //       console.log(error)
+    //      dispatch(setAppErrorAC(error))
+    //       //handleServerAppError(dispatch, error)
+    //     })
    // reset()
+
+  }
+  if(isLoggedIn){
+    return <Navigate to={Path.Main} />
   }
   return (
     <Grid container justifyContent={"center"}>
