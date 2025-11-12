@@ -19,6 +19,7 @@ export const authSlice = createAppSlice({
                 async (data: LoginInputs, {dispatch, rejectWithValue}) => {
                     try {
                         dispatch(setAppStatusAC({status: "loading"}))
+
                         const res = await loginApi.authLogin(data)
                         if (res.data.resultCode === ResultCode.Success) {
                             dispatch(setAppStatusAC({status: "succeeded"}))
@@ -59,15 +60,37 @@ export const authSlice = createAppSlice({
                 },
                 {
                     fulfilled: (state, action) => {
-                        console.log('++++')
-                       state.isLoggedIn = action.payload.isLoggedIn
+                        state.isLoggedIn = action.payload.isLoggedIn
                     },
                 }
             ),
+            meTC: create.asyncThunk(
+                async (_, {dispatch, rejectWithValue}) => {
+                    try {
+                        const res = await loginApi.me()
+                        if (res.data.resultCode === ResultCode.Success) {
+                            dispatch(setAppStatusAC({status: "succeeded"}))
+                            return {isLoggedIn: true}
+                        } else {
+                            handleServerAppError(res.data, dispatch)
+                            return rejectWithValue(null)
+                        }
+                    } catch (error) {
+                        handleServerNetworkError(dispatch, error)
+                        return rejectWithValue(null)
+                    }
+                },
+                {
+                    fulfilled: (state, action) => {
+                        state.isLoggedIn = action.payload.isLoggedIn
+
+                    },
+                }
+            )
         });
     },
 })
 
-export const { selectIsLoggedIn } = authSlice.selectors
-export const { loginTC,logoutTC } = authSlice.actions
+export const {selectIsLoggedIn} = authSlice.selectors
+export const {loginTC, logoutTC, meTC} = authSlice.actions
 export const authReducer = authSlice.reducer

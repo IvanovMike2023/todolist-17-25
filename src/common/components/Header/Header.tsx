@@ -15,14 +15,14 @@ import {logoutTC, selectIsLoggedIn} from "@/features/auth/model/auth-slice";
 export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode)
   const status = useAppSelector(selectAppStatus)
-  const IsLoggedIn = useAppSelector(selectIsLoggedIn)
+  const isLoggedIn = useAppSelector(selectIsLoggedIn)
   const dispatch = useAppDispatch()
   const theme = getTheme(themeMode)
 
   const changeMode = () => {
     dispatch(changeThemeModeAC({ themeMode: themeMode === "light" ? "dark" : "light" }))
   }
-const buttonK=()=>{
+const logoutHandler=()=>{
   dispatch(logoutTC())
 }
   return (
@@ -33,7 +33,7 @@ const buttonK=()=>{
             <MenuIcon />
           </IconButton>
           <div>
-            {IsLoggedIn && <NavButton onClick={buttonK}>Sign out</NavButton>}
+            {isLoggedIn && <NavButton onClick={logoutHandler}>Sign out</NavButton>}
             <NavButton background={theme.palette.primary.dark}>Faq</NavButton>
             <Switch color={"default"} onChange={changeMode} />
           </div>

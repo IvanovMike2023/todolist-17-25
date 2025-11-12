@@ -6,5 +6,8 @@ export const loginApi = {
     },
     deleteLogin() {
         return instance.delete(`/auth/login`)
+    },
+    me() {
+        return instance.get<BaseResponse>(`/auth/me`)
     }
 }
