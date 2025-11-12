@@ -16,7 +16,7 @@ const dispatch = useAppDispatch()
   const theme = getTheme(themeMode)
   useEffect(() => {
     dispatch(meTC())
-  },[isLoggedIn] )
+  },[] )
   return (
     <ThemeProvider theme={theme}>
       <div className={"app"}>

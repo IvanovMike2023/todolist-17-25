@@ -4,15 +4,17 @@ import {createTodolistTC} from "@/features/todolists/model/todolists-slice"
 import {Todolists} from "@/features/todolists/ui/Todolists/Todolists"
 import Container from "@mui/material/Container"
 import Grid from "@mui/material/Grid"
-import {meTC, selectIsLoggedIn} from "@/features/auth/model/auth-slice";
-import {Navigate} from "react-router";
+import {selectIsLoggedIn} from "@/features/auth/model/auth-slice";
+import {useNavigate} from "react-router";
 import {Path} from "@/common/routing";
-import {useEffect} from "react";
 
 export const Main = () => {
     const dispatch = useAppDispatch()
-
+let navigate = useNavigate()
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
+ if(isLoggedIn===false){
+     navigate(Path.Login)
+ }
 
     const createTodolist = (title: string) => {
         dispatch(createTodolistTC(title))
@@ -23,7 +25,7 @@ export const Main = () => {
                 <CreateItemForm onCreateItem={createTodolist}/>
             </Grid>
             <Grid container spacing={4}>
-                {!isLoggedIn && <Navigate to={Path.Login}/>}
+
                 <Todolists/>
             </Grid>
         </Container>

@@ -4,14 +4,17 @@ import {setAppStatusAC} from "@/app/app-slice";
 import {loginApi} from "@/features/auth/api/authApi";
 import {ResultCode} from "@/common/enums";
 import {AUTH_TOKEN} from "@/common/constants";
+import {string} from "zod";
 
 export const authSlice = createAppSlice({
     name: 'auth',
     initialState: {
         isLoggedIn: false,
+        login: ''
     },
     selectors: {
         selectIsLoggedIn: (state) => state.isLoggedIn,
+        getLogin: (state) => state.login
     },
     reducers: create => {
         return ({
@@ -70,7 +73,7 @@ export const authSlice = createAppSlice({
                         const res = await loginApi.me()
                         if (res.data.resultCode === ResultCode.Success) {
                             dispatch(setAppStatusAC({status: "succeeded"}))
-                            return {isLoggedIn: true}
+                            return {isLoggedIn: true,login:res.data.data.login}
                         } else {
                             handleServerAppError(res.data, dispatch)
                             return rejectWithValue(null)
@@ -83,6 +86,7 @@ export const authSlice = createAppSlice({
                 {
                     fulfilled: (state, action) => {
                         state.isLoggedIn = action.payload.isLoggedIn
+                        state.login = action.payload.login
 
                     },
                 }
@@ -91,6 +95,6 @@ export const authSlice = createAppSlice({
     },
 })
 
-export const {selectIsLoggedIn} = authSlice.selectors
+export const {selectIsLoggedIn,getLogin} = authSlice.selectors
 export const {loginTC, logoutTC, meTC} = authSlice.actions
 export const authReducer = authSlice.reducer
