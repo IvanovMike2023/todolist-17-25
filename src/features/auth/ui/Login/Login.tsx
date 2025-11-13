@@ -16,6 +16,7 @@ import styles from "./Login.module.css"
 import {loginTC, selectIsLoggedIn} from "@/features/auth/model/auth-slice";
 import {Navigate, useNavigate} from "react-router";
 import {Path} from "@/common/routing";
+import {Counter} from "@/features/auth/ui/Login/Counter";
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -37,19 +38,6 @@ export const Login = () => {
 
   const onSubmit: SubmitHandler<LoginInputs> = (data) => {
     dispatch(loginTC(data))
-    //     .unwrap()
-    //     .then((res)=>{
-    //   if(res.isLoggedIn){
-    //     navigate(Path.Main)
-    //   }
-    // })
-    //     .catch((error)=>{
-    //       console.log(error)
-    //      dispatch(setAppErrorAC(error))
-    //       //handleServerAppError(dispatch, error)
-    //     })
-   // reset()
-
   }
   if(isLoggedIn){
     return <Navigate to={Path.Main} />

@@ -22,7 +22,6 @@ export const App = () => {
             setInit(true)
         })
     }, [])
-    console.log(init)
   if(!init){
    return <h1>cs</h1>
   }
