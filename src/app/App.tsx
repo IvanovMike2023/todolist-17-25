@@ -1,13 +1,14 @@
 import "./App.css"
-import {selectThemeMode} from "@/app/app-slice"
-import {ErrorSnackbar, Header} from "@/common/components"
+import {selectAppStatus, selectThemeMode, setAppStatusAC} from "@/app/app-slice"
+import {ErrorSnackbar, Header, PageNotFound} from "@/common/components"
 import {useAppDispatch, useAppSelector} from "@/common/hooks"
-import {Routing} from "@/common/routing"
+import {Path, Routing} from "@/common/routing"
 import {getTheme} from "@/common/theme"
 import CssBaseline from "@mui/material/CssBaseline"
 import {ThemeProvider} from "@mui/material/styles"
 import {useEffect, useState} from "react";
 import {meTC, selectIsLoggedIn} from "@/features/auth/model/auth-slice";
+import {Navigate} from "react-router";
 
 export const App = () => {
     const themeMode = useAppSelector(selectThemeMode)
@@ -16,12 +17,14 @@ export const App = () => {
     const theme = getTheme(themeMode)
   const [init,setInit]=useState(false)
     useEffect(() => {
-        dispatch(meTC()).unwrap().then((res)=>{
-          setInit(true)
+        dispatch(meTC()).unwrap()
+            .finally(()=>{
+            setInit(true)
         })
     }, [])
+    console.log(init)
   if(!init){
-    return <h1>!!!!</h1>
+   return <h1>cs</h1>
   }
     return (
         <ThemeProvider theme={theme}>
