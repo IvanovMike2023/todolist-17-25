@@ -1,14 +1,14 @@
 import "./App.css"
-import {selectAppStatus, selectThemeMode, setAppStatusAC} from "@/app/app-slice"
-import {ErrorSnackbar, Header, PageNotFound} from "@/common/components"
+import {selectThemeMode} from "@/app/app-slice"
+import {ErrorSnackbar, Header} from "@/common/components"
 import {useAppDispatch, useAppSelector} from "@/common/hooks"
-import {Path, Routing} from "@/common/routing"
+import {Routing} from "@/common/routing"
 import {getTheme} from "@/common/theme"
 import CssBaseline from "@mui/material/CssBaseline"
 import {ThemeProvider} from "@mui/material/styles"
 import {useEffect, useState} from "react";
 import {meTC, selectIsLoggedIn} from "@/features/auth/model/auth-slice";
-import {Navigate} from "react-router";
+
 
 export const App = () => {
     const themeMode = useAppSelector(selectThemeMode)
