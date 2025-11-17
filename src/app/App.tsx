@@ -25,6 +25,7 @@ export const App = () => {
   if(!init){
    return <h1>cs</h1>
   }
+
     return (
         <ThemeProvider theme={theme}>
             <div className={"app"}>
