@@ -14,13 +14,15 @@ export const todolistsSlice = createAppSlice({
   reducers: (create) => ({
     fetchTodolistsTC: create.asyncThunk(
       async (_, { dispatch, rejectWithValue }) => {
+
         try {
           dispatch(setAppStatusAC({ status: "loading" }))
           const res = await todolistsApi.getTodolists()
           const todolists = todolistSchema.array().parse(res.data)
           dispatch(setAppStatusAC({ status: "succeeded" }))
           return { todolists }
-        } catch (error) {
+        }
+        catch (error) {
           handleServerNetworkError(dispatch, error)
           return rejectWithValue(null)
         }

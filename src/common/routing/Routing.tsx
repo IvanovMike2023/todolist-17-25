@@ -5,6 +5,7 @@ import {PrivateRoutes} from "@/common/components/PageNotFound/PrivateRoutes";
 import {useAppSelector} from "@/common/hooks";
 import {selectIsLoggedIn} from "@/features/auth/model/auth-slice";
 import {PageNotFound} from "@/common/components";
+import {selectisLoggedIn} from "@/app/app-slice";
 
 export const Path = {
     Main: "/",
@@ -13,7 +14,7 @@ export const Path = {
 } as const
 
 export const Routing = () => {
-    const isLoggedIn = useAppSelector(selectIsLoggedIn)
+    const isLoggedIn = useAppSelector(selectisLoggedIn)
     return (
         <Routes>
             <Route element={<PrivateRoutes isAllowed={isLoggedIn}/>}>

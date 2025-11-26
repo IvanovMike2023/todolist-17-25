@@ -1,7 +1,7 @@
 import {createAppSlice, handleServerAppError, handleServerNetworkError} from "@/common/utils";
 import {LoginInputs} from "@/features/auth/lib/schemas";
 import {setAppStatusAC} from "@/app/app-slice";
-import {loginApi} from "@/features/auth/api/authApi";
+import {loginApi} from "@/features/auth/api/1authApi";
 import {ResultCode} from "@/common/enums";
 import {AUTH_TOKEN} from "@/common/constants";
 import {string} from "zod";
@@ -9,11 +9,9 @@ import {string} from "zod";
 export const authSlice = createAppSlice({
     name: 'auth',
     initialState: {
-        isLoggedIn: false,
         login: ''
     },
     selectors: {
-        selectIsLoggedIn: (state) => state.isLoggedIn,
         getLogin: (state) => state.login
     },
     reducers: create => {

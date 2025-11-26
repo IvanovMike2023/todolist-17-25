@@ -1,4 +1,4 @@
-import {selectThemeMode, setAppErrorAC} from "@/app/app-slice"
+import {selectisLoggedIn, selectThemeMode, setAppErrorAC, setIsLoggedIn} from "@/app/app-slice"
 import {useAppDispatch, useAppSelector} from "@/common/hooks"
 import {getTheme} from "@/common/theme"
 import {type LoginInputs, loginSchema} from "@/features/auth/lib/schemas"
@@ -17,14 +17,17 @@ import {loginTC, selectIsLoggedIn} from "@/features/auth/model/auth-slice";
 import {Navigate, useNavigate} from "react-router";
 import {Path} from "@/common/routing";
 import {Counter} from "@/features/auth/ui/Login/Counter";
+import {useLoginMutation} from "@/features/auth/api/_authApi";
+import {AUTH_TOKEN} from "@/common/constants";
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
   const dispatch = useAppDispatch()
   const theme = getTheme(themeMode)
   let navigate = useNavigate()
-  const isLoggedIn = useAppSelector(selectIsLoggedIn)
+  const isLoggedIn = useAppSelector(selectisLoggedIn)
 
+  const [setLogin] = useLoginMutation()
   const {
     register,
     handleSubmit,
@@ -37,8 +40,14 @@ export const Login = () => {
   })
 
   const onSubmit: SubmitHandler<LoginInputs> = (data) => {
-    dispatch(loginTC(data))
+    setLogin(data).then((res)=>{
+      if(res.data.resultCode===0){
+        localStorage.setItem(AUTH_TOKEN, res.data?.data.token);
+        dispatch(setIsLoggedIn({ isLoggedIn: true }))
+      }
+    })
   }
+
   if(isLoggedIn){
     return <Navigate to={Path.Main} />
   }

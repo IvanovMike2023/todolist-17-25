@@ -772,22 +772,11 @@ createRoot(document.getElementById("root")!).render(
 // type AppDispatch = typeof store.dispatch
 // const useAppDispatch = useDispatch.withTypes<AppDispatch>()
 // const useAppSelector = useSelector.withTypes<RootState>()
-//
+//navigate("/profile")
 // // main.ts
 // createRoot(document.getElementById("root")!).render(
 //     <Provider store={store}>
 //         <App />
 //     </Provider>,
 // )
-
-// 📜 Описание:
-// Откройте панель разработчика и нажмите на кнопку Get Water
-// В консоли вы увидите такой результат
-// Proxy(Object) {type_: 0, scope_: {…}, modified_: false, finalized_: false, assigned_: {…},
-
-// 🪛 Задача:
-// Выведите в консоль state таким образом, чтобы получить вот такой результат {liters: 10}
-// В качестве ответа укажите исправленную строку кода.
-
-// ❗Для решения данной задачи использовать метод который предоставляет нам @reduxjs/toolkit
 

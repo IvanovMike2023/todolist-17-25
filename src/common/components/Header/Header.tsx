@@ -1,4 +1,4 @@
-import { changeThemeModeAC, selectAppStatus, selectThemeMode } from "@/app/app-slice.ts"
+import {changeThemeModeAC, selectAppStatus, selectisLoggedIn, selectThemeMode, setIsLoggedIn} from "@/app/app-slice.ts"
 import { useAppDispatch, useAppSelector } from "@/common/hooks"
 import { containerSx } from "@/common/styles"
 import { getTheme } from "@/common/theme"
@@ -11,20 +11,28 @@ import Switch from "@mui/material/Switch"
 import Toolbar from "@mui/material/Toolbar"
 import LinearProgress from "@mui/material/LinearProgress"
 import {getLogin, logoutTC, selectIsLoggedIn} from "@/features/auth/model/auth-slice";
+import {useLoginMutation, useLogoutMutation} from "@/features/auth/api/_authApi";
+import {AUTH_TOKEN} from "@/common/constants";
 
 export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode)
   const status = useAppSelector(selectAppStatus)
-  const isLoggedIn = useAppSelector(selectIsLoggedIn)
+  const isLoggedIn = useAppSelector(selectisLoggedIn)
   const dispatch = useAppDispatch()
   const theme = getTheme(themeMode)
+  const [Logout] = useLogoutMutation()
 
   const changeMode = () => {
     dispatch(changeThemeModeAC({ themeMode: themeMode === "light" ? "dark" : "light" }))
   }
   const login = useAppSelector(getLogin)
   const logoutHandler=()=>{
-  dispatch(logoutTC())
+    Logout().then((res)=>{
+      if(res.data.resultCode===0){
+        localStorage.removeItem(AUTH_TOKEN);
+        dispatch(setIsLoggedIn({ isLoggedIn: false }))
+      }
+    })
 }
   return (
     <AppBar position="static" sx={{ mb: "30px" }}>
