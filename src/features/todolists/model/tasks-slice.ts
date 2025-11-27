@@ -152,5 +152,34 @@ export const tasksSlice = createAppSlice({
 export const { selectTasks } = tasksSlice.selectors
 export const { fetchTasksTC, createTaskTC, deleteTaskTC, updateTaskTC } = tasksSlice.actions
 export const tasksReducer = tasksSlice.reducer
-
 export type TasksState = Record<string, DomainTask[]>
+
+
+
+import {baseApi} from "@/app/api/baseApi";
+import {BaseResponse} from "@/common/types";
+
+export const _tasksApi = baseApi.injectEndpoints({
+  endpoints: (build) => ({
+    getTask: build.query<any, void>({
+      query: (todolistId:string) => `/todo-lists/${todolistId}/tasks`,
+       providesTags: ['Tasks']
+    }),
+    // login: build.mutation< any , any>({
+    //   query: (body) => ({url: '/auth/login', method: 'POST', body}),
+    //   invalidatesTags: ['Auth']
+    // }),
+    deleteTask: build.mutation<void,{todolistId:string,taskId:string}>({
+      query: ({todolistId, taskId}) => ({url: `/todo-lists/${todolistId}/tasks/${taskId}`, method: 'delete'}),
+      invalidatesTags: ['Tasks']
+    })
+  }),
+
+})
+
+export const {
+  useGetTaskQuery,
+  useDeleteTaskMutation,
+  useLogoutMutation
+} = _tasksApi
+
