@@ -165,10 +165,28 @@ export const _tasksApi = baseApi.injectEndpoints({
       query: (todolistId:string) => `/todo-lists/${todolistId}/tasks`,
        providesTags: ['Tasks']
     }),
-    // login: build.mutation< any , any>({
-    //   query: (body) => ({url: '/auth/login', method: 'POST', body}),
-    //   invalidatesTags: ['Auth']
-    // }),
+    updateTasksItem: build.mutation<void,any>({
+      query: (data) => {
+        const {todolistId,taskId,model}=data
+        console.log(data)
+        return {
+          url: `/todo-lists/${todolistId}/tasks/${taskId}`,
+          method:'PUT',
+          body:model
+        }
+      },
+      invalidatesTags: ['Tasks']
+    }),
+    createTask: build.mutation<void,{todolistId:string,title:any}>({
+      query: ({todolistId, title}) => {
+        return {
+          url: `/todo-lists/${todolistId}/tasks`,
+          method: 'post',
+          body: {title}
+        }
+      },
+      invalidatesTags: ['Tasks']
+    }),
     deleteTask: build.mutation<void,{todolistId:string,taskId:string}>({
       query: ({todolistId, taskId}) => ({url: `/todo-lists/${todolistId}/tasks/${taskId}`, method: 'delete'}),
       invalidatesTags: ['Tasks']
@@ -180,6 +198,7 @@ export const _tasksApi = baseApi.injectEndpoints({
 export const {
   useGetTaskQuery,
   useDeleteTaskMutation,
-  useLogoutMutation
+  useCreateTaskMutation,
+  useUpdateTasksItemMutation
 } = _tasksApi
 

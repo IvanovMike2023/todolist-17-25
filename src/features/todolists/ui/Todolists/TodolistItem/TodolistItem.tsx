@@ -1,5 +1,5 @@
 import { useAppDispatch } from "@/common/hooks"
-import {createTaskTC, useGetTaskQuery} from "@/features/todolists/model/tasks-slice"
+import {createTaskTC, useCreateTaskMutation, useGetTaskQuery} from "@/features/todolists/model/tasks-slice"
 import type { DomainTodolist } from "@/features/todolists/model/todolists-slice"
 import { FilterButtons } from "./FilterButtons/FilterButtons"
 import { Tasks } from "./Tasks/Tasks"
@@ -13,8 +13,9 @@ type Props = {
 export const TodolistItem = ({ todolist }: Props) => {
   const dispatch = useAppDispatch()
     const {data}= useGetTaskQuery(todolist.id)
+    const [CreateTask]=useCreateTaskMutation()
   const createTask = (title: string) => {
-    dispatch(createTaskTC({ todolistId: todolist.id, title }))
+      CreateTask({ todolistId: todolist.id, title })
   }
 
   return (
