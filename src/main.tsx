@@ -1,375 +1,9 @@
-import { App } from "@/app/App"
-import { createRoot } from "react-dom/client"
-import "./index.css"
-import { Provider } from "react-redux"
-import { BrowserRouter } from "react-router"
-import { store } from "./app/store"
-
-createRoot(document.getElementById("root")!).render(
-  <BrowserRouter>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </BrowserRouter>,
-)
-
-//
-//
-// import { configureStore, createSlice } from "@reduxjs/toolkit"
+// import { App } from "@/app/App"
 // import { createRoot } from "react-dom/client"
-// import { Provider, useDispatch, useSelector } from "react-redux"
-//
-// type Product = {
-//     id: number
-//     name: string
-//     inStock: boolean
-// }
-//
-// // slice
-// const slice = createSlice({
-//     name: "products",
-//     initialState: [
-//         { id: 1, name: "Laptop", inStock: true },
-//         { id: 2, name: "Headphones", inStock: false },
-//         { id: 3, name: "Smartphone", inStock: true },
-//     ] as Product[],
-//     reducers: {
-//         toggleInStock: (state, action) => {
-//             const product = state.find((product) => product.id === action.payload.id)
-//             if (product) {
-//                 product.inStock = action.payload.inStock
-//             }
-//         },
-//         clearStock: (state) => {
-//             return [] as Product[]
-//         },
-//     },
-//     selectors: {
-//         selectProducts: (state) => state,
-//     },
-// })
-//
-// const { toggleInStock, clearStock } = slice.actions
-// const { selectProducts } = slice.selectors
-//
-// // App.tsx
-// const App = () => {
-//     const products = useAppSelector(selectProducts)
-//     const dispatch = useAppDispatch()
-//     const handleLogout = () => {
-//         dispatch(clearStock(products))
-//     }
-//
-//     const toggleProductStock = (product: Product) => {
-//         dispatch(toggleInStock({ id: product.id, inStock: !product.inStock }))
-//     }
-//
-//     return (
-//         <div>
-//             <button onClick={handleLogout}>Logout</button>
-//             <ul>
-//                 {products.map((product) => (
-//                     <li key={product.id}>
-//             <span
-//                 style={{
-//                     color: product.inStock ? "green" : "red",
-//                 }}
-//             >
-//               {product.name} ({product.inStock ? "In Stock" : "Out of Stock"})
-//             </span>
-//                         <button onClick={() => toggleProductStock(product)}>
-//                             {product.inStock ? "Mark Out of Stock" : "Mark In Stock"}
-//                         </button>
-//                     </li>
-//                 ))}
-//             </ul>
-//         </div>
-//     )
-// }
-//
-// // store.ts
-// const store = configureStore({
-//     reducer: {
-//         products: slice.reducer,
-//     },
-// })
-//
-// type RootState = ReturnType<typeof store.getState>
-// type AppDispatch = typeof store.dispatch
-// const useAppDispatch = useDispatch.withTypes<AppDispatch>()
-// const useAppSelector = useSelector.withTypes<RootState>()
-//
-// // main.ts
-// createRoot(document.getElementById("root")!).render(
-//     <Provider store={store}>
-//         <App />
-//     </Provider>,
-// )
-
-// 📜 Описание:
-// При нажатии на кнопку Logout массив товаров не очищается 🥲
-
-// 🪛 Задача:
-// Перепишите изменение стейта таким образом, чтобы при нажатии на кнопку Logout,
-// массив товаров полностью очищался.
-// В качестве ответа укажите исправленную строку кода.
-//
-// import { asyncThunkCreator, buildCreateSlice, configureStore } from "@reduxjs/toolkit"
-// import axios from "axios"
-// import { createRoot } from "react-dom/client"
-// import { SubmitHandler, useForm } from "react-hook-form"
-// import { Provider, useDispatch, useSelector } from "react-redux"
-// import { BrowserRouter, Navigate, Route, Routes, useNavigate } from "react-router"
-// import { useEffect } from "react"
-//
-// // Types
-// type Inputs = {
-//     email: string
-//     password: string
-// }
-//
-// // Api
-// const instance = axios.create({ baseURL: "https://exams-frontend.kimitsu.it-incubator.io/api/" })
-//
-// const api = {
-//     login(data: Inputs) {
-//         return instance.post("auth/login", data)
-//     },
-// }
-//
-// // Slice
-// const createAppSlice = buildCreateSlice({ creators: { asyncThunk: asyncThunkCreator } })
-//
-// const slice = createAppSlice({
-//     name: "auth",
-//     initialState: {
-//         isLoggedIn: false,
-//         isLoading: false,
-//     },
-//     selectors: {
-//         selectIsLoggedIn: (state) => state.isLoggedIn,
-//         selectIsLoading: (state) => state.isLoading,
-//     },
-//     reducers: (create) => ({
-//         setLoading: create.reducer<{ isLoading: boolean }>((state, action) => {
-//             state.isLoading = action.payload.isLoading
-//         }),
-//         login: create.asyncThunk(
-//             async (arg: Inputs, { dispatch, rejectWithValue }) => {
-//                 try {
-//                     dispatch(setLoading({ isLoading: true }))
-//                     await api.login(arg)
-//                     return { isLoggedIn: true }
-//                 } catch (error) {
-//                     return rejectWithValue(null)
-//                 }
-//             },
-//             {
-//                 fulfilled: (state, action) => {
-//                     alert("Вы залогинились успешно")
-//                     state.isLoggedIn = action.payload.isLoggedIn
-//                 },
-//                 settled: (state) => {
-//                     state.isLoading = false
-//                 },
-//             },
-//         ),
-//     }),
-// })
-//
-// const authReducer = slice.reducer
-// const { setLoading, login } = slice.actions
-// const { selectIsLoading, selectIsLoggedIn } = slice.selectors
-//
-// // Components
-// const Loader = () => {
-//     return <h1>Loading ...</h1>
-// }
-//
-// const Profile = () => {
-//     return <h2>😎 Profile</h2>
-// }
-//
-// const Login = () => {
-//     const dispatch = useAppDispatch()
-//     const navigate = useNavigate()
-//
-//     const isLoading = useAppSelector(selectIsLoading)
-//     const isLoggedIn = useAppSelector(selectIsLoggedIn)
-//
-//     const { register, handleSubmit } = useForm<Inputs>({
-//         defaultValues: { email: "darrell@gmail.com", password: "123" },
-//     })
-//
-//     // ❗ XXX
-//     console.log(isLoggedIn)
-//
-//     useEffect(()=>{
-//         if(isLoggedIn){
-//             return navigate("/profile")
-//         }
-//     },[isLoggedIn, navigate])
-//     const onSubmit: SubmitHandler<Inputs> = (data) => {
-//         dispatch(login(data))
-//     }
-//
-//     return (
-//         <>
-//             {isLoading && <Loader />}
-//             <form onSubmit={handleSubmit(onSubmit)}>
-//                 <input placeholder={"Введите email"} {...register("email")} />
-//                 <input type={"password"} placeholder={"Введите пароль"} {...register("password")} />
-//                 <button type="submit">Залогиниться</button>
-//             </form>
-//         </>
-//     )
-// }
-//
-// // Store
-// const store = configureStore({
-//     reducer: {
-//         [slice.name]: authReducer,
-//     },
-// })
-//
-// type RootState = ReturnType<typeof store.getState>
-// type AppDispatch = typeof store.dispatch
-// const useAppDispatch = useDispatch.withTypes<AppDispatch>()
-// const useAppSelector = useSelector.withTypes<RootState>()
-//
-// createRoot(document.getElementById("root")!).render(
-//     <BrowserRouter>
-//         <Provider store={store}>
-//             <Routes>
-//                 <Route path={"/"} element={<Login />} />
-//                 <Route path={"profile"} element={<Profile />} />
-//             </Routes>
-//         </Provider>
-//     </BrowserRouter>,
-// )
-
-// 📜 Описание:
-// ❗ Email и password менять не надо. Это просто тестовые данные с которыми будет происходить
-// успешный запрос.
-// Нажмите на кнопку "Залогиниться" и вы увидели alert с успешным сообщением
-
-// Что необходимо написать вместо `❗ XXX`, чтобы
-// при успешной логинизации, редиректнуть пользователя на страницу Profile.
-// ❗ В консоли не должно быть ошибок
-//
-// import { asyncThunkCreator, buildCreateSlice, configureStore } from "@reduxjs/toolkit"
-// import axios from "axios"
-// import { useEffect } from "react"
-// import { Provider, useDispatch, useSelector } from "react-redux"
-// import { BrowserRouter, Route, Routes } from "react-router"
-// import { createRoot } from "react-dom/client"
-//
-// // Utils
-// console.log = () => {}
-//
-// // Api
-// const instance = axios.create({
-//     baseURL: "https://exams-frontend.kimitsu.it-incubator.io/api/",
-// })
-//
-// const api = {
-//     getUsers() {
-//         /* 1 */
-//         return instance.get("users")
-//     },
-// }
-//
-// // Slice
-// const createAppSlice = buildCreateSlice({ creators: { asyncThunk: asyncThunkCreator } })
-//
-// const slice = createAppSlice({
-//     name: "auth",
-//     initialState: {
-//         isLoading: false,
-//         users: [] as any[],
-//     },
-//     selectors: {
-//         selectIsLoading: (state) => state.isLoading,
-//         selectUsers: (state) => state.users,
-//     },
-//     reducers: (create) => ({
-//         setLoading: create.reducer<{ isLoading: boolean }>((state, action) => {
-//             state.isLoading = action.payload.isLoading
-//         }),
-//         fetchUsers: create.asyncThunk(
-//             async (_arg, { dispatch, rejectWithValue }) => {
-//                 try {
-//                     dispatch(setLoading({ isLoading: true }))
-//                     /* 2 */
-//                     const res = await api.getUsers()
-//                     /* 3 */
-//                     return { users: res.data.items }
-//                 } catch (error) {
-//                     return rejectWithValue(null)
-//                 }
-//             },
-//             {
-//                 fulfilled: (state, action) => {
-//                     /* 4 */
-//                     state.users = action.payload.users
-//                 },
-//             },
-//         ),
-//     }),
-// })
-//
-// const authReducer = slice.reducer
-// const { setLoading, fetchUsers } = slice.actions
-// const { selectUsers } = slice.selectors
-//
-// // Login
-// const Login = () => {
-//     const users = useAppSelector(selectUsers)
-//
-//     /* 5 */
-//     return (
-//         <div>
-//             {users.map((u) => (
-//                 <p key={u.id}>{u.email}</p>
-//             ))}
-//             <h1>
-//                 В данном задании на экран смотреть не нужно. Рекомендуем взять ручку, листик и последовательно, спокойно
-//                 расставить цифры в нужном порядке. Прежде чем давать ответ обязательно посчитайте к-во цифр и сверьте с
-//                 подсказкой. Удачи 🚀
-//             </h1>
-//         </div>
-//     )
-// }
-//
-// // App
-// const App = () => {
-//     /* 6 */
-//     const dispatch = useAppDispatch()
-//
-//     useEffect(() => {
-//         /* 7 */
-//         dispatch(fetchUsers())
-//     }, [])
-//
-//     /* 8 */
-//     return (
-//         <Routes>
-//             <Route path={"/"} element={<Login />} />
-//         </Routes>
-//     )
-// }
-//
-// // Store
-// const store = configureStore({
-//     reducer: {
-//         [slice.name]: authReducer,
-//     },
-// })
-//
-// type RootState = ReturnType<typeof store.getState>
-// type AppDispatch = typeof store.dispatch
-// const useAppDispatch = useDispatch.withTypes<AppDispatch>()
-// const useAppSelector = useSelector.withTypes<RootState>()
+// import "./index.css"
+// import { Provider } from "react-redux"
+// import { BrowserRouter } from "react-router"
+// import { store } from "./app/store"
 //
 // createRoot(document.getElementById("root")!).render(
 //     <BrowserRouter>
@@ -378,305 +12,79 @@ createRoot(document.getElementById("root")!).render(
 //         </Provider>
 //     </BrowserRouter>,
 // )
-
-// 📜 Описание:
-// Задача: напишите в какой последовательности вызовутся числа при успешном запросе.
-// 💡 Подсказка: будет 9 чисел.
-// Ответ дайте через пробел.
-
-// 🖥 Пример ответа: 1 2 3 4 5 6 7 8 9
-///6 8  5      7  2 1 3  4 5
-//
-// import {configureStore, createSlice, current} from "@reduxjs/toolkit"
 // import { createRoot } from "react-dom/client"
-// import { Provider, useDispatch, useSelector } from "react-redux"
 //
-// type Note = {
-//     id: number
-//     content: string
-//     important: boolean
+// export const App = () => {
+//     return (
+//         <div>
+//             <h2>Чем отличается master от origin master ?</h2>
+//             <ul>
+//                 <li>1 - Это просто 2 ветки с разными названиями. Их ничего не связывает</li>
+//                 <li>2 - master принадлежит локальному репозиторию, origin master - удаленному</li>
+//                 <li>3 - Это 2 названия одной и той же ветки. Приставка origin не несет никакого смысла.</li>
+//                 <li>4 - Ветки origin master не существует</li>
+//                 <li>5 - Нет правильного ответа</li>
+//             </ul>
+//         </div>
+//     )
 // }
 //
-// // slice
-// const slice = createSlice({
-//     name: "notes",
-//     initialState: {
-//         items: [
-//             { id: 1, content: "Buy groceries", important: false },
-//             { id: 2, content: "Schedule meeting", important: false },
-//             { id: 3, content: "Call mom", important: false },
-//         ],
-//     },
-//     reducers: {
-//         updateNote: (state, action) => {
-//          const item= state.items.find((n) => n.id === action.payload.id)
-//          if(item){
-//              item.important=action.payload.important
-//          }
+// createRoot(document.getElementById("root")!).render(<App />)
+
+// 📜 Описание:
+// Чем отличается master от origin master ?
+// Может быть несколько вариантов ответа (ответ дайте через пробел).
+// ❗ Ответ будет засчитан как верный, только при полном правильном совпадении.
+// Если указали правильно один вариант (1),
+// а нужно было указать два варианта (1 и 2), то ответ в данном случае будет засчитан как неправильный
+
+// 🖥 Пример ответа: 1
+
+// import { configureStore } from "@reduxjs/toolkit"
+// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+// import { createRoot } from "react-dom/client"
+// import { Provider } from "react-redux"
 //
-//         return state
-//         },
-//     },
-//     selectors: {
-//         selectNotes: (state) => state.items,
+// type Photo = {
+//     albumId: string
+//     id: string
+//     title: string
+//     url: string
+// }
+//
+// // Api
+// const api = createApi({
+//     reducerPath: "api",
+//     baseQuery: fetchBaseQuery({ baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/" }),
+//     endpoints: (builder) => {
+//         return {
+//             getPhotos: builder.query<Photo[], void>({
+//                 query: () => "photos",
+//             }),
+//         }
 //     },
 // })
 //
-// const { updateNote } = slice.actions
-// const { selectNotes } = slice.selectors
+// const { useGetPhotosQuery, useLazyGetPhotosQuery } = api
 //
 // // App.tsx
 // const App = () => {
-//     const notes = useAppSelector(selectNotes)
-//     const dispatch = useAppDispatch()
-//
-//     const toggleImportance = (note: Note) => {
-//         dispatch(updateNote({ id: note.id, important: !note.important }))
+//     // ❗❗❗XXX❗❗❗
+//     const {data}=useGetPhotosQuery()
+//     const [trigger]=useLazyGetPhotosQuery()
+//     const getPhotosHandler = () => {
+//         trigger()
 //     }
-//
-//     return (
-//         <ul>
-//             {notes.map((note) => (
-//                 <li key={note.id}>
-//           <span
-//               style={{
-//                   fontWeight: note.important ? "bold" : "normal",
-//               }}
-//           >
-//             {note.content}
-//           </span>
-//                     <button onClick={() => toggleImportance(note)}>{note.important ? "Unmark" : "Mark Important"}</button>
-//                 </li>
-//             ))}
-//         </ul>
-//     )
-// }
-//
-// // store.ts
-// const store = configureStore({
-//     reducer: {
-//         notes: slice.reducer,
-//     },
-// })
-//
-// type RootState = ReturnType<typeof store.getState>
-// type AppDispatch = typeof store.dispatch
-// const useAppDispatch = useDispatch.withTypes<AppDispatch>()
-// const useAppSelector = useSelector.withTypes<RootState>()
-//
-// // main.ts
-// createRoot(document.getElementById("root")!).render(
-//     <Provider store={store}>
-//         <App />
-//     </Provider>,
-// )
-
-// 📜 Описание:
-// При нажатии на кнопку Mark Important или Unmark рядом с заметкой, важность заметки не обновляется 🥲
-
-// 🪛 Задача:
-// Перепишите изменение стейта таким образом, чтобы при нажатии на кнопку Mark Important или Unmark,
-// состояние важности заметки обновлялось.
-// В качестве ответа укажите исправленный код написанный вместо return state.
-// ❗Изменение стейта должно быть написано мутабельным образом
-// ❗Не используйте деструктуризацию action.payload (const {id} = action.payload)
-// ❗Не создавайте переменные из action.payload (const id = action.payload.id)
-
-//
-//
-// import { createRoot } from "react-dom/client"
-// import { SubmitHandler, useForm } from "react-hook-form"
-// import { z } from "zod"
-// import { zodResolver } from "@hookform/resolvers/zod"
-// import { CSSProperties } from "react"
-//
-// // Styles
-// const error: CSSProperties = {
-//     color: "red",
-// }
-//
-// // Schema
-// const loginSchema = z.object({
-//     username: z.string()
-//     .min(1, { message: "Username is required" })
-//         .min(3, { message: "Username must be at least 3 characters" })
-//         .max(20, { message: "Username must contain at most 20 characters" })
-//         .regex(/^[A-Za-z]+$/, { message: "Only latin letters allowed" }),
-//     // ❗AAA // Username is required
-//     // ❗BBB // Username must be at least 3 characters
-//     // ❗CCC // Username must contain at most 20 characters
-//     // ❗DDD // Only latin letters allowed
-//     email: z.string().min(1, { message: "Email is required" }).email({ message: "Invalid email format" }),
-//     password: z.string().min(1, { message: "Password is required" }),
-//     phone: z.string().regex(/^\+?[0-9]{10,15}$/, { message: "Invalid phone number" }),
-// })
-//
-// type LoginFormValues = z.infer<typeof loginSchema>
-//
-// // Components
-// const Login = () => {
-//     const {
-//         register,
-//         handleSubmit,
-//         formState: { errors },
-//     } = useForm<LoginFormValues>({
-//         resolver: zodResolver(loginSchema),
-//     })
-//
-//     const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
-//         console.log(data)
-//     }
-//
-//     return (
-//         <form onSubmit={handleSubmit(onSubmit)}>
-//             {/* Username */}
-//             <div>
-//                 <label>Username</label>
-//                 <input {...register("username")} />
-//                 {errors.username && <span style={error}>{errors.username.message}</span>}
-//             </div>
-//
-//             {/* Email */}
-//             <div>
-//                 <label>Email</label>
-//                 <input {...register("email")} />
-//                 {errors.email && <span style={error}>{errors.email.message}</span>}
-//             </div>
-//
-//             {/* Password */}
-//             <div>
-//                 <label>Password</label>
-//                 <input type="password" {...register("password")} />
-//                 {errors.password && <span style={error}>{errors.password.message}</span>}
-//             </div>
-//
-//             {/* Phone */}
-//             <div>
-//                 <label>Phone (optional)</label>
-//                 <input {...register("phone")} placeholder="+1234567890" />
-//                 {errors.phone && <span style={error}>{errors.phone.message}</span>}
-//             </div>
-//
-//             <button type="submit">Login</button>
-//         </form>
-//     )
-// }
-//
-// createRoot(document.getElementById("root")!).render(<Login />)
-
-// Что необходимо написать вместо ❗AAA, ❗BBB, ❗CCC, ❗DDD
-// для того, чтобы валидировать Username согласно условиям написанным в схеме
-
-// Пример ответа
-//   .min(1, { message: "Username is required" })
-//   .min(2, { message: "Username must be at least 3 characters" })
-//   .min(3, { message: "Username must contain at most 20 characters" })
-//   .min(4, { message: "Only latin letters allowed" }),
-// import { useEffect } from "react"
-// import { createRoot } from "react-dom/client"
-// import { Provider, useDispatch, useSelector } from "react-redux"
-// import axios from "axios"
-// import { asyncThunkCreator, buildCreateSlice, configureStore } from "@reduxjs/toolkit"
-// import { z } from "zod"
-//
-// // Types
-// type Film = {
-//     id: string
-//     nameOriginal: string
-//     description: string
-//     ratingImdb: number
-// }
-//
-// type FilmsResponse = {
-//     total: number
-//     messages: string[]
-//     page: number
-//     pageCount: number
-//     data: Film[]
-// }
-//
-// // ZOD schemas
-// const filmSchema = z.object({
-//     id: z.string(),
-//     nameOriginal: z.string(),
-//     description: z.string(),
-//     ratingImdb: z.number(),
-// })
-//
-// const filmsResponseSchema = z.object({
-//     total: z.number().int().positive(),
-//    messages: z.array(z.string()),
-//     page: z.number().int().positive(),
-//     pageCount: z.number().int().positive(),
-//     data: filmSchema.array(),
-// })
-//
-// // Api
-// const instance = axios.create({ baseURL: "https://exams-frontend.kimitsu.it-incubator.io/api/" })
-//
-// const api = {
-//     getFilms() {
-//         return instance.get<FilmsResponse>("films")
-//     },
-// }
-//
-// // Slice
-// const createAppSlice = buildCreateSlice({ creators: { asyncThunk: asyncThunkCreator } })
-//
-// const slice = createAppSlice({
-//     name: "films",
-//     initialState: {
-//         films: [] as Film[],
-//     },
-//     selectors: {
-//         selectFilms: (state) => state.films,
-//     },
-//     reducers: (create) => ({
-//         fetchFilms: create.asyncThunk(
-//             async (_arg, { rejectWithValue }) => {
-//                 try {
-//                     const res = await api.getFilms()
-//                     filmsResponseSchema.parse(res.data) // 💎 ZOD
-//                     return { films: res.data.data }
-//                 } catch (error) {
-//                     if (error instanceof z.ZodError) {
-//                         alert("Zod error")
-//                         console.table(error.issues)
-//                     }
-//                     return rejectWithValue(null)
-//                 }
-//             },
-//             {
-//                 fulfilled: (state, action) => {
-//                     state.films = action.payload.films
-//                 },
-//             },
-//         ),
-//     }),
-// })
-//
-// const filmsReducer = slice.reducer
-// const { fetchFilms } = slice.actions
-// const { selectFilms } = slice.selectors
-//
-// // App
-// const App = () => {
-//     const dispatch = useAppDispatch()
-//     const films = useAppSelector(selectFilms)
-//
-//     useEffect(() => {
-//         dispatch(fetchFilms())
-//     }, [])
 //
 //     return (
 //         <>
-//             <h2>🎦 Films</h2>
-//             {films.map((film) => {
+//             <button onClick={getPhotosHandler}>Get photos</button>
+//             {data?.map((el) => {
 //                 return (
-//                     <div key={film.id}>
-//                         <b>{film.nameOriginal}</b>
-//                         <p>{film.description}</p>
-//                         <p>⭐ {film.ratingImdb} </p>
+//                     <div key={el.id} style={{ border: "1px solid", margin: "5px", padding: "5px" }}>
+//                         <div>
+//                             <b>title</b> - {el.title}
+//                         </div>
 //                     </div>
 //                 )
 //             })}
@@ -684,17 +92,11 @@ createRoot(document.getElementById("root")!).render(
 //     )
 // }
 //
-// // Store
+// // store.ts
 // const store = configureStore({
-//     reducer: {
-//         [slice.name]: filmsReducer,
-//     },
+//     reducer: { [api.reducerPath]: api.reducer },
+//     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
 // })
-//
-// type RootState = ReturnType<typeof store.getState>
-// type AppDispatch = typeof store.dispatch
-// const useAppDispatch = useDispatch.withTypes<AppDispatch>()
-// const useAppSelector = useSelector.withTypes<RootState>()
 //
 // createRoot(document.getElementById("root")!).render(
 //     <Provider store={store}>
@@ -702,61 +104,81 @@ createRoot(document.getElementById("root")!).render(
 //     </Provider>,
 // )
 
-// ❗Убедитесь, что у вас установлена библиотека zod. В описании к экзамену предупреждение было.
-// Если нет, то установите `pnpm add zod`
+// 📜 Описание:
+// Приложение падает с ошибкой
 
-// При загрузке приложения падает с ошибкой (Zod error),
-// т.к. filmsResponseSchema описана неверно.
-// Ваша задача на основании типа FilmsResponse устранить все ошибки в filmsResponseSchema,
-// чтобы проверка прошла и фильмы подгрузились
-// ❗Числа (total, page, pageCount) должны проверяться, что они целые и положительные
-// ❗ Менять порядок свойств в схеме запрещено
-// ❗ Выносить дублирующиеся проверки в отдельную переменную не надо
-
-// В качестве ответа укажите filmsResponseSchema целиком
-
-// Пример ответа
-// const filmsResponseSchema = z.object({
-//   total: z.boolean(),
-//   messages: z.any(),
-//   page: z.any(),
-//   pageCount: z.any(),
-//   data: z.any(),
-// })
-
-// import {configureStore, createSlice, current} from "@reduxjs/toolkit"
+// 🪛 Задача:
+// Почините приложение.
+// Что нужно написать вместо `// ❗❗❗XXX❗❗❗` чтобы при нажатии на кнопку `Get photos`
+// отобразились данные пришедшие с сервера
+// В качестве ответа укажите написанный вами код
 // import { createRoot } from "react-dom/client"
-// import { Provider, useDispatch, useSelector } from "react-redux"
 //
-// // slice
-// const slice = createSlice({
-//     name: "waterCounter",
-//     initialState: {
-//         liters: 10,
-//     },
+// export const App = () => {
+//     return (
+//         <h2>
+//             Какая команда позволяет на время «сдать в архив» (или отложить) изменения, сделанные в рабочей копии, чтобы вы
+//             могли применить их позже? Откладывание изменений полезно, если вам необходимо переключить контекст и вы пока не
+//             готовы к созданию коммита.
+//         </h2>
+//     )
+// }
 //
-//     reducers: {
-//         count: (state) => {
-//             console.log(current(state))
-//         },
-//     },
-//     selectors: {
-//         selectLiters: (state) => state.liters,
+// createRoot(document.getElementById("root")!).render(<App />)
+
+// 📜 Описание:
+// Какая команда позволяет на время «сдать в архив» (или отложить) изменения, сделанные в рабочей
+// копии, чтобы вы могли применить их позже? Откладывание изменений полезно, если вам необходимо переключить
+// контекст и вы пока не готовы к созданию коммита.
+
+// 🖥 Пример ответа: git init
+
+// import { configureStore } from "@reduxjs/toolkit"
+// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+// import { createRoot } from "react-dom/client"
+// import { Provider } from "react-redux"
+// import {baseApi} from "@/app/api/baseApi";
+//
+// type Comment = {
+//     postId: string
+//     id: string
+//     name: string
+//     email: string
+//     body: string
+// }
+//
+// // Api
+// const api = createApi({
+//     reducerPath: "commentsApi",
+//     baseQuery: fetchBaseQuery({ baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/" }),
+//     endpoints: (builder) => {
+//         return {
+//             // // ❗❗❗XXX❗❗❗
+//             // GetComments:builder.query({
+//             //     query:()=>{
+//             //         url:${baseU}
+//             //     }
+//             // })
+//
+//         }
 //     },
 // })
 //
-// const { count } = slice.actions
-// const { selectLiters } = slice.selectors
+// const { useGetCommentsQuery } = api
 //
 // // App.tsx
 // const App = () => {
-//     const water = useAppSelector(selectLiters)
-//     const dispatch = useAppDispatch()
+//     const { data } = useGetCommentsQuery()
 //
 //     return (
 //         <>
-//             <button onClick={() => dispatch(count())}>Get Water</button>
-//             <span>{water} liters</span>
+//             {data?.map((el) => {
+//                 return (
+//                     <div key={el.id} style={{ border: "1px solid", margin: "5px", padding: "5px" }}>
+//                         <p>body - {el.body}</p>
+//                     </div>
+//                 )
+//             })}
 //         </>
 //     )
 // }
@@ -764,19 +186,367 @@ createRoot(document.getElementById("root")!).render(
 // // store.ts
 // const store = configureStore({
 //     reducer: {
-//         waterCounter: slice.reducer,
+//         [api.reducerPath]: api.reducer,
 //     },
+//     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
 // })
 //
-// type RootState = ReturnType<typeof store.getState>
-// type AppDispatch = typeof store.dispatch
-// const useAppDispatch = useDispatch.withTypes<AppDispatch>()
-// const useAppSelector = useSelector.withTypes<RootState>()
-//navigate("/profile")
-// // main.ts
 // createRoot(document.getElementById("root")!).render(
 //     <Provider store={store}>
 //         <App />
 //     </Provider>,
 // )
 
+// 📜 Описание:
+// Белый экран. Откройте панель разработчика и проанализируйте в чем ошибка
+
+// 🪛 Задача:
+// Что нужно написать вместо  `// ❗❗❗XXX❗❗❗` чтобы на экране отобразились комментарии
+// В качестве ответа укажите написанный вами код
+// ❗Типизацию указывать обязательно
+// import { configureStore } from "@reduxjs/toolkit";
+// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+// import { createRoot } from "react-dom/client";
+// import { Provider } from "react-redux";
+//
+// type Photo = {
+//     albumId: string;
+//     id: string;
+//     title: string;
+//     url: string;
+// };
+//
+// // Api
+// const api = createApi({
+//     reducerPath: "api",
+//     tagTypes: ['Photo'],
+//     baseQuery: fetchBaseQuery({ baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/" }),
+//     endpoints: (builder) => {
+//         return {
+//             getPhotos: builder.query<Photo[], void>({
+//                 query: () => "photos",
+//                 providesTags: ['Photo'],
+//             },
+//                 ),
+//             updatePhoto: builder.mutation<Photo, { id: string; title: string }>({
+//                 query: ({ id, title }) => {
+//                     return {
+//                         method: "PUT",
+//                         url: `photos/${id}`,
+//                         body: { title },
+//                     };
+//                 },
+//                 invalidatesTags: ['Photo']
+//             }),
+//         };
+//     },
+// });
+//
+// const { useGetPhotosQuery, useUpdatePhotoMutation } = api;
+//
+// // App.tsx
+// const App = () => {
+//     const { data } = useGetPhotosQuery();
+//     const [trigger] = useUpdatePhotoMutation();
+//
+//     const updatePhotoTitleHandler = (id: string) => {
+//         trigger({ id, title: "Тестовое сообщение" });
+//     };
+//
+//     return (
+//         <>
+//             {data?.map((el) => {
+//                 return (
+//                     <div key={el.id} style={{ margin: "15px" }}>
+//                         <b>title</b> - {el.title}
+//                         <button onClick={() => updatePhotoTitleHandler(el.id)}>Update title</button>
+//                     </div>
+//                 );
+//             })}
+//         </>
+//     );
+// };
+//
+// // store.ts
+// const store = configureStore({
+//     reducer: { [api.reducerPath]: api.reducer },
+//     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
+// });
+//
+// createRoot(document.getElementById("root")!).render(
+//     <Provider store={store}>
+//         <App />
+//     </Provider>,
+// );
+
+// 📜 Описание:
+// Нажмите на кнопку Update title и обновите страницу. После обновления страницы title
+// изменится, но хотелось бы не перегружать страницу
+
+// 🪛 Задача:
+// Реализуйте автоматический re-fetching используя теги. Т.е. чтобы после нажатия на кнопку Update title, title обновился без ручной перезагрузки страницы
+// обновился без ручной перезагрузки страницы
+
+// 💡 Подсказка: необходимо дописать 3 строки кода
+// В ответе укажите добавленные строки кода через пробел
+// ❗Запятую в конце строки указывать обязательно
+
+// 🖥 Пример ответа: xxx: {id: 1}, yyy: {id: 2}, zzz: {id: 3}
+// import { configureStore } from "@reduxjs/toolkit"
+// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+// import { createRoot } from "react-dom/client"
+// import { Provider } from "react-redux"
+// import {baseApi} from "@/app/api/baseApi";
+//
+// type Post = {
+//     body: string
+//     id: string
+//     title: string
+//     userId: string
+// }
+//
+// // Api
+// const api = createApi({
+//     reducerPath: "api",
+//     baseQuery: fetchBaseQuery({ baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/" }),
+//     endpoints: (builder) => {
+//         return {
+//             getPosts: builder.query<Post[], void>({
+//                 query: () => "posts",
+//             }),
+//             removePost:builder.mutation<void,{id:string}>({
+//                 query: (id) => ({url: `posts/${id}`, method: 'delete'}),
+//             })
+//             // ❗❗❗XXX❗❗❗
+//         }
+//     },
+// })
+//
+// const { useGetPostsQuery, useRemovePostMutation } = api
+//
+// // App.tsx
+// const App = () => {
+//     const { data } = useGetPostsQuery()
+//     const [removePost] = useRemovePostMutation()
+//
+//     const removePostHandler = (id: string) => {
+//         removePost(id)
+//     }
+//
+//     return (
+//         <>
+//             {data?.map((el) => {
+//                 return (
+//                     <div key={el.id} style={{ display: "flex", alignItems: "center" }}>
+//                         <div style={{ border: "1px solid", margin: "5px", padding: "5px", width: "200px" }}>
+//                             <p>
+//                                 <b>title</b> - {el.title}
+//                             </p>
+//                         </div>
+//                         <button onClick={() => removePostHandler(el.id)}>x</button>
+//                     </div>
+//                 )
+//             })}
+//         </>
+//     )
+// }
+//
+// // store.ts
+// const store = configureStore({
+//     reducer: { [api.reducerPath]: api.reducer },
+//     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
+// })
+//
+// createRoot(document.getElementById("root")!).render(
+//     <Provider store={store}>
+//         <App />
+//     </Provider>,
+// )
+
+// 📜 Описание:
+// Приложение падает с ошибкой.
+
+// 🪛 Задача:
+// Что нужно написать вместо `// ❗❗❗XXX❗❗❗` чтобы на при нажатии на кнопку `x` пост удалился.
+// В качестве ответа укажите написанный вами код
+// ❗Автоматическое получение данных реализовывать не надо
+// ❗Типизацию указывать обязательно
+
+
+
+//
+// import { configureStore } from "@reduxjs/toolkit"
+// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+// import { createRoot } from "react-dom/client"
+// import { Provider } from "react-redux"
+// import {UpdateTaskModel} from "@/features/todolists/api/tasksApi.types";
+//
+// type Comment = {
+//     postId: string
+//     id: string
+//     name: string
+//     email: string
+//     body: string
+// }
+//
+// // Api
+// const api = createApi({
+//     reducerPath: "commentsApi",
+//     baseQuery: fetchBaseQuery({ baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/" }),
+//     endpoints: (builder) => {
+//         return {
+//             getComments: builder.query<Comment[], void>({
+//                 query: () => "comments",
+//             }),
+//             // ❗❗❗XXX❗❗❗
+//             addComment: builder.mutation<void, { message: string }>({
+//                 query: (message) => {
+//                     return {
+//                         url: `comments`,
+//                         method: 'post',
+//                         body: {message}
+//                     }
+//                 }
+//             }),
+//         }
+//     },
+// })
+//
+// const { useGetCommentsQuery, useAddCommentMutation } = api
+//
+// // App.tsx
+// const App = () => {
+//     const { data } = useGetCommentsQuery()
+//     const [addComment] = useAddCommentMutation()
+//
+//     const addCommentHandler = () => {
+//         addComment("Тестовая строка. Ее менять не нужно")
+//     }
+//
+//     return (
+//         <>
+//             <button onClick={addCommentHandler}>Add comment</button>
+//             {data?.map((el) => {
+//                 return (
+//                     <div key={el.id} style={{ border: "1px solid", margin: "5px", padding: "5px" }}>
+//                         <p>body - {el.body}</p>
+//                     </div>
+//                 )
+//             })}
+//         </>
+//     )
+// }
+//
+// // store.ts
+// const store = configureStore({
+//     reducer: {
+//         [api.reducerPath]: api.reducer,
+//     },
+//     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
+// })
+//
+// createRoot(document.getElementById("root")!).render(
+//     <Provider store={store}>
+//         <App />
+//     </Provider>,
+// )
+
+// 📜 Описание:
+// Белый экран. Откройте панель разработчика и проанализируйте в чем ошибка
+
+// 🪛 Задача:
+// Что нужно написать вместо `// ❗❗❗XXX❗❗❗` чтобы при нажатии на кнопку `Add comment`
+// новый комментарий добавлялся и был виден в конце массива после перезагрузки страница
+// ❗ Автоматическое получение данных реализовывать не надо
+// В качестве ответа укажите написанный вами код
+// ❗Типизацию указывать обязательно
+
+
+
+
+import { configureStore } from "@reduxjs/toolkit"
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { createRoot } from "react-dom/client"
+import { Provider } from "react-redux"
+
+type Product = {
+    id: string
+    title: string
+    description: string
+    price: number
+}
+
+export type Response = {
+    total: number
+    messages: string[]
+    page: number
+    pageCount: number
+    data: Product[]
+}
+
+// Api
+const productsApi = createApi({
+    reducerPath: "productsApi",
+    baseQuery: fetchBaseQuery({ baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/" }),
+    endpoints: (builder) => {
+        return {
+            getProducts: builder.query<Product[], void>({
+                query: () => {
+                    return {
+                        method: "GET",
+                        url: "products",
+                    }
+                },
+                // ❗❗❗XXX❗❗❗
+                // providesTags:(result)=> {
+                //     console.log(result)
+                //     return result
+                //
+                // }
+            }),
+        }
+    },
+})
+
+const { useGetProductsQuery } = productsApi
+
+// App.tsx
+const App = () => {
+    const { data: products } = useGetProductsQuery()
+
+    return (
+        <>
+            {products?.map((el) => {
+                return (
+                    <div key={el.id} style={{ border: "1px solid", margin: "5px", padding: "5px" }}>
+                        <p>title - {el.title}</p>
+                        <p>description - {el.description}</p>
+                    </div>
+                )
+            })}
+        </>
+    )
+}
+
+// store.ts
+const store = configureStore({
+    reducer: {
+        [productsApi.reducerPath]: productsApi.reducer,
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(productsApi.middleware),
+})
+
+createRoot(document.getElementById("root")!).render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+)
+
+// 📜 Описание:
+// Белый экран. Откройте панель разработчика и проанализируйте в чем ошибка
+
+// 🪛 Задача:
+// Что нужно написать вместо  `// ❗❗❗XXX❗❗❗` чтобы на экране отобразились продукты
+// В качестве ответа укажите написанный вами код
+// ❗Типизацию указывать обязательно
+// ❗Ответ принимает синтаксис стрелочной функции
