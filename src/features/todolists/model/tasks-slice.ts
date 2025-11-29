@@ -3,7 +3,12 @@ import type { RootState } from "@/app/store"
 import { ResultCode } from "@/common/enums"
 import { createAppSlice, handleServerAppError, handleServerNetworkError } from "@/common/utils"
 import { tasksApi } from "@/features/todolists/api/tasksApi"
-import { type DomainTask, domainTaskSchema, type UpdateTaskModel } from "@/features/todolists/api/tasksApi.types"
+import {
+  CreateTask,
+  type DomainTask,
+  domainTaskSchema,
+  type UpdateTaskModel
+} from "@/features/todolists/api/tasksApi.types"
 import { createTodolistTC, deleteTodolistTC } from "./todolists-slice"
 
 export const tasksSlice = createAppSlice({
@@ -165,10 +170,9 @@ export const _tasksApi = baseApi.injectEndpoints({
       query: (todolistId:string) => `/todo-lists/${todolistId}/tasks`,
        providesTags: ['Tasks']
     }),
-    updateTasksItem: build.mutation<void,any>({
+    updateTasksItem: build.mutation<void,{todolistId:string,taskId:string,model:string}>({
       query: (data) => {
         const {todolistId,taskId,model}=data
-        console.log(data)
         return {
           url: `/todo-lists/${todolistId}/tasks/${taskId}`,
           method:'PUT',
@@ -177,7 +181,7 @@ export const _tasksApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ['Tasks']
     }),
-    createTask: build.mutation<void,{todolistId:string,title:any}>({
+    createTask: build.mutation<void,{todolistId:string,title:UpdateTaskModel}>({
       query: ({todolistId, title}) => {
         return {
           url: `/todo-lists/${todolistId}/tasks`,
