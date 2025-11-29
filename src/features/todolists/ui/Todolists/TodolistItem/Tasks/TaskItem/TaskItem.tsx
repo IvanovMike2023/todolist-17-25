@@ -7,7 +7,7 @@ import {
     updateTaskTC,
     useDeleteTaskMutation,
     useUpdateTasksItemMutation
-} from "@/features/todolists/model/tasks-slice"
+} from "@/features/todolists/api/tasksApi"
 import type {DomainTodolist} from "@/features/todolists/model/todolists-slice"
 import DeleteIcon from "@mui/icons-material/Delete"
 import Checkbox from "@mui/material/Checkbox"

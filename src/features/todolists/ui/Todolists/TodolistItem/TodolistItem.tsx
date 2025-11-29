@@ -1,5 +1,5 @@
 import {useAppDispatch} from "@/common/hooks"
-import {useCreateTaskMutation, useGetTaskQuery} from "@/features/todolists/model/tasks-slice"
+import {useCreateTaskMutation, useGetTaskQuery} from "@/features/todolists/api/tasksApi"
 import type {DomainTodolist} from "@/features/todolists/model/todolists-slice"
 import {FilterButtons} from "./FilterButtons/FilterButtons"
 import {Tasks} from "./Tasks/Tasks"
