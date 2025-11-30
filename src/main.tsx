@@ -374,82 +374,82 @@
 
 
 
-//
-// import { configureStore } from "@reduxjs/toolkit"
-// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-// import { createRoot } from "react-dom/client"
-// import { Provider } from "react-redux"
-// import {UpdateTaskModel} from "@/features/todolists/api/tasksApi.types";
-//
-// type Comment = {
-//     postId: string
-//     id: string
-//     name: string
-//     email: string
-//     body: string
-// }
-//
-// // Api
-// const api = createApi({
-//     reducerPath: "commentsApi",
-//     baseQuery: fetchBaseQuery({ baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/" }),
-//     endpoints: (builder) => {
-//         return {
-//             getComments: builder.query<Comment[], void>({
-//                 query: () => "comments",
-//             }),
-//             // ❗❗❗XXX❗❗❗
-//             addComment: builder.mutation<void, { message: string }>({
-//                 query: (message) => {
-//                     return {
-//                         url: `comments`,
-//                         method: 'post',
-//                         body: {message}
-//                     }
-//                 }
-//             }),
-//         }
-//     },
-// })
-//
-// const { useGetCommentsQuery, useAddCommentMutation } = api
-//
-// // App.tsx
-// const App = () => {
-//     const { data } = useGetCommentsQuery()
-//     const [addComment] = useAddCommentMutation()
-//
-//     const addCommentHandler = () => {
-//         addComment("Тестовая строка. Ее менять не нужно")
-//     }
-//
-//     return (
-//         <>
-//             <button onClick={addCommentHandler}>Add comment</button>
-//             {data?.map((el) => {
-//                 return (
-//                     <div key={el.id} style={{ border: "1px solid", margin: "5px", padding: "5px" }}>
-//                         <p>body - {el.body}</p>
-//                     </div>
-//                 )
-//             })}
-//         </>
-//     )
-// }
-//
-// // store.ts
-// const store = configureStore({
-//     reducer: {
-//         [api.reducerPath]: api.reducer,
-//     },
-//     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
-// })
-//
-// createRoot(document.getElementById("root")!).render(
-//     <Provider store={store}>
-//         <App />
-//     </Provider>,
-// )
+
+import { configureStore } from "@reduxjs/toolkit"
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { createRoot } from "react-dom/client"
+import { Provider } from "react-redux"
+import {UpdateTaskModel} from "@/features/todolists/api/tasksApi.types";
+
+type Comment = {
+    postId: string
+    id: string
+    name: string
+    email: string
+    body: string
+}
+
+// Api
+const api = createApi({
+    reducerPath: "commentsApi",
+    baseQuery: fetchBaseQuery({ baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/" }),
+    endpoints: (builder) => {
+        return {
+            getComments: builder.query<Comment[], void>({
+                query: () => "comments",
+            }),
+            // ❗❗❗XXX❗❗❗
+            addComment: builder.mutation<Comment, { body: string }>({
+                query: (body) => {
+                    return {
+                        url: `comments`,
+                        method: 'POST',
+                        body: {body}
+                    }
+                }
+            }),
+        }
+    },
+})
+
+const { useGetCommentsQuery, useAddCommentMutation } = api
+
+// App.tsx
+const App = () => {
+    const { data } = useGetCommentsQuery()
+    const [addComment] = useAddCommentMutation()
+
+    const addCommentHandler = () => {
+        addComment("Тестовая строка. Ее менять не нужно")
+    }
+
+    return (
+        <>
+            <button onClick={addCommentHandler}>Add comment</button>
+            {data?.map((el) => {
+                return (
+                    <div key={el.id} style={{ border: "1px solid", margin: "5px", padding: "5px" }}>
+                        <p>body - {el.body}</p>
+                    </div>
+                )
+            })}
+        </>
+    )
+}
+
+// store.ts
+const store = configureStore({
+    reducer: {
+        [api.reducerPath]: api.reducer,
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
+})
+
+createRoot(document.getElementById("root")!).render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+)
 
 // 📜 Описание:
 // Белый экран. Откройте панель разработчика и проанализируйте в чем ошибка
@@ -462,85 +462,81 @@
 // ❗Типизацию указывать обязательно
 
 
-
-
-import { configureStore } from "@reduxjs/toolkit"
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import { createRoot } from "react-dom/client"
-import { Provider } from "react-redux"
-
-type Product = {
-    id: string
-    title: string
-    description: string
-    price: number
-}
-
-export type Response = {
-    total: number
-    messages: string[]
-    page: number
-    pageCount: number
-    data: Product[]
-}
-
-// Api
-const productsApi = createApi({
-    reducerPath: "productsApi",
-    baseQuery: fetchBaseQuery({ baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/" }),
-    endpoints: (builder) => {
-        return {
-            getProducts: builder.query<Product[], void>({
-                query: () => {
-                    return {
-                        method: "GET",
-                        url: "products",
-                    }
-                },
-                // ❗❗❗XXX❗❗❗
-                // providesTags:(result)=> {
-                //     console.log(result)
-                //     return result
-                //
-                // }
-            }),
-        }
-    },
-})
-
-const { useGetProductsQuery } = productsApi
-
-// App.tsx
-const App = () => {
-    const { data: products } = useGetProductsQuery()
-
-    return (
-        <>
-            {products?.map((el) => {
-                return (
-                    <div key={el.id} style={{ border: "1px solid", margin: "5px", padding: "5px" }}>
-                        <p>title - {el.title}</p>
-                        <p>description - {el.description}</p>
-                    </div>
-                )
-            })}
-        </>
-    )
-}
-
-// store.ts
-const store = configureStore({
-    reducer: {
-        [productsApi.reducerPath]: productsApi.reducer,
-    },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(productsApi.middleware),
-})
-
-createRoot(document.getElementById("root")!).render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-)
+//
+//
+// import { configureStore } from "@reduxjs/toolkit"
+// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+// import { createRoot } from "react-dom/client"
+// import { Provider } from "react-redux"
+//
+// type Product = {
+//     id: string
+//     title: string
+//     description: string
+//     price: number
+// }
+//
+// export type Response = {
+//     total: number
+//     messages: string[]
+//     page: number
+//     pageCount: number
+//     data: Product[]
+// }
+//
+// // Api
+// const productsApi = createApi({
+//     reducerPath: "productsApi",
+//     baseQuery: fetchBaseQuery({ baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/" }),
+//     endpoints: (builder) => {
+//         return {
+//             getProducts: builder.query<Product[], void>({
+//                 query: () => {
+//                     return {
+//                         method: "GET",
+//                         url: "products",
+//                     }
+//                 },
+//                 transformResponse: (response: Response) => response.data,
+//                 // ❗❗❗XXX❗❗❗
+//             }),
+//         }
+//     },
+// })
+//
+// const { useGetProductsQuery } = productsApi
+//
+// // App.tsx
+// const App = () => {
+//     const { data: products } = useGetProductsQuery()
+//
+//     return (
+//         <>
+//             {products?.map((el) => {
+//                 return (
+//                     <div key={el.id} style={{ border: "1px solid", margin: "5px", padding: "5px" }}>
+//                         <p>title - {el.title}</p>
+//                         <p>description - {el.description}</p>
+//                     </div>
+//                 )
+//             })}
+//         </>
+//     )
+// }
+//
+// // store.ts
+// const store = configureStore({
+//     reducer: {
+//         [productsApi.reducerPath]: productsApi.reducer,
+//     },
+//     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(productsApi.middleware),
+// })
+//
+// createRoot(document.getElementById("root")!).render(
+//     <Provider store={store}>
+//         <App />
+//     </Provider>,
+// )
 
 // 📜 Описание:
 // Белый экран. Откройте панель разработчика и проанализируйте в чем ошибка
