@@ -6,13 +6,29 @@ import {Routing} from "@/common/routing"
 import {getTheme} from "@/common/theme"
 import CssBaseline from "@mui/material/CssBaseline"
 import {ThemeProvider} from "@mui/material/styles"
-import {useEffect, useState} from "react";
+import React, {memo, useEffect, useMemo, useState} from "react";
 import {meTC, selectIsLoggedIn} from "@/features/auth/model/auth-slice";
 import {CircularProgress} from "@mui/material";
 import Box from "@mui/material/Box";
 import {useMeQuery} from "@/features/auth/api/_authApi";
+import {Child} from "@/app/Child";
 
 
+
+const Memo=()=>{
+    const [item,setItem]=useState(0)
+    const onClick=useMemo(()=>{4},[])
+    const value=useMemo(()=>{
+        const val=5
+    },[])
+        const r=224444544532
+    return (
+        <div>
+            <button onClick={()=>setItem(item+1)}>add</button>
+            <span>{item}</span>
+            <Child value={value} onClick={onClick} /></div>
+    )
+}
 export const App = () => {
     const themeMode = useAppSelector(selectThemeMode)
     //const isLoggedIn = useAppSelector(selectIsLoggedIn)
@@ -22,23 +38,24 @@ export const App = () => {
     const [isInitialized, setIsInitialized] = useState(false)
 
 
-    const { data, isLoading } = useMeQuery()
-    useEffect(() => {
-        if (!isLoading) {
-            setIsInitialized(true)
-            if (data?.resultCode === 0) {
-                dispatch(setIsLoggedIn({ isLoggedIn: true }))
-            }
-        }
-    }, [isLoading, data])
+    // const { data, isLoading } = useMeQuery()
+    // useEffect(() => {
+    //     if (!isLoading) {
+    //         setIsInitialized(true)
+    //         if (data?.resultCode === 0) {
+    //             dispatch(setIsLoggedIn({ isLoggedIn: true }))
+    //         }
+    //     }
+    // }, [isLoading, data])
 
     return (
         <ThemeProvider theme={theme}>
             <div className={"app"}>
-                <CssBaseline/>
-                <Header/>
-                <Routing/>
-                <ErrorSnackbar/>
+                {/*<CssBaseline/>*/}
+                <Memo/>
+                {/*<Header/>*/}
+                {/*<Routing/>*/}
+                {/*<ErrorSnackbar/>*/}
             </div>
         </ThemeProvider>
     )
