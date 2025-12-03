@@ -1,33 +1,33 @@
-import {TaskStatus} from "@/common/enums"
-import {useAppDispatch} from "@/common/hooks"
-import type {DomainTodolist} from "@/features/todolists/model/todolists-slice"
 import {TaskItem} from "./TaskItem/TaskItem"
 import List from "@mui/material/List"
+import {Todolist} from "@/features/todolists/api/todolistsApi.types";
+import {domainTaskSchema} from "@/features/todolists/api/tasksApi.types";
 
 type Props = {
-  data:any,
-  todolist: DomainTodolist
+    todolist: string
+    data: any
+    filter: number
 }
-export const Tasks = ({ todolist,data }: Props) => {
-  const { id, filter } = todolist
-  const dispatch = useAppDispatch()
-let filteredTasks
-  if(data){
-    filteredTasks = data
-    if (filter === "active") {
-      filteredTasks = filteredTasks.filter((task) => task.status === TaskStatus.New)
+export const Tasks = ({todolist, data, filter}: Props) => {
+    console.log(data)
+    let filteredTasks
+    if (data) {
+        filteredTasks = data
     }
-    if (filter === "completed") {
-      filteredTasks = filteredTasks.filter((task) => task.status === TaskStatus.Completed)
+
+    if (filter === 1) {
+        filteredTasks = data.filter((el) => el.status === 0)
     }
-  }
-  return (
-    <>
-      {filteredTasks?.length === 0 ? (
-        <p>Тасок нет</p>
-      ) : (
-        <List>{filteredTasks?.map((task) => <TaskItem key={task.id} task={task} todolist={todolist} />)}</List>
-      )}
-    </>
-  )
+    if (filter === 2) {
+        filteredTasks = data.filter((el) => el.status === 2)
+    }
+    return (
+        <>
+            {filteredTasks?.length === 0 ? (
+                <p>Тасок нет</p>
+            ) : (
+                <List>{filteredTasks?.map((task) => <TaskItem key={task.id} task={task} todolist={todolist}/>)}</List>
+            )}
+        </>
+    )
 }

@@ -2,7 +2,7 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 import {AUTH_TOKEN} from "@/common/constants";
 export const baseApi = createApi({
     reducerPath: 'authApi',
-    tagTypes: ['Tasks'],
+    tagTypes: ['Tasks','Todolist','Auth'],
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_BASE_URL,
         prepareHeaders: headers => {

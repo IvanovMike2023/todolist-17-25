@@ -13,10 +13,8 @@ import Grid from "@mui/material/Grid"
 import TextField from "@mui/material/TextField"
 import {Controller, type SubmitHandler, useForm} from "react-hook-form"
 import styles from "./Login.module.css"
-import {loginTC, selectIsLoggedIn} from "@/features/auth/model/auth-slice";
 import {Navigate, useNavigate} from "react-router";
 import {Path} from "@/common/routing";
-import {Counter} from "@/features/auth/ui/Login/Counter";
 import {useLoginMutation} from "@/features/auth/api/_authApi";
 import {AUTH_TOKEN} from "@/common/constants";
 

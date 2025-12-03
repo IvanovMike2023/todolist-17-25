@@ -1,5 +1,3 @@
-import {useAppSelector} from "@/common/hooks";
-import {selectIsLoggedIn} from "@/features/auth/model/auth-slice";
 import {Path} from "@/common/routing";
 import {Navigate, Outlet} from "react-router";
 import {ReactNode} from "react";

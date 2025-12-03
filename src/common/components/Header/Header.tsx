@@ -1,4 +1,4 @@
-import {changeThemeModeAC, selectAppStatus, selectisLoggedIn, selectThemeMode, setIsLoggedIn} from "@/app/app-slice.ts"
+import {changeThemeModeAC, selectAppStatus, selectisLoggedIn, selectThemeMode, setIsLoggedIn} from "@/app/app-slice"
 import { useAppDispatch, useAppSelector } from "@/common/hooks"
 import { containerSx } from "@/common/styles"
 import { getTheme } from "@/common/theme"
@@ -10,8 +10,7 @@ import IconButton from "@mui/material/IconButton"
 import Switch from "@mui/material/Switch"
 import Toolbar from "@mui/material/Toolbar"
 import LinearProgress from "@mui/material/LinearProgress"
-import {getLogin, logoutTC, selectIsLoggedIn} from "@/features/auth/model/auth-slice";
-import {useLoginMutation, useLogoutMutation} from "@/features/auth/api/_authApi";
+import { useLogoutMutation} from "@/features/auth/api/_authApi";
 import {AUTH_TOKEN} from "@/common/constants";
 
 export const Header = () => {
@@ -21,17 +20,19 @@ export const Header = () => {
   const dispatch = useAppDispatch()
   const theme = getTheme(themeMode)
   const [Logout] = useLogoutMutation()
-
   const changeMode = () => {
     dispatch(changeThemeModeAC({ themeMode: themeMode === "light" ? "dark" : "light" }))
   }
-  const login = useAppSelector(getLogin)
+
   const logoutHandler=()=>{
-    Logout().then((res)=>{
-      if(res.data.resultCode===0){
-        localStorage.removeItem(AUTH_TOKEN);
-        dispatch(setIsLoggedIn({ isLoggedIn: false }))
-      }
+    Logout().catch((res)=>{
+
+        if(res.data.resultCode===0){
+          localStorage.removeItem(AUTH_TOKEN);
+          dispatch(setIsLoggedIn({ isLoggedIn: false }))
+        }
+
+
     })
 }
   return (
@@ -44,7 +45,6 @@ export const Header = () => {
           <div>
             {isLoggedIn && <NavButton onClick={logoutHandler}>Sign out</NavButton>}
             <NavButton background={theme.palette.primary.dark}>Faq</NavButton>
-            <>{isLoggedIn && login}</>
             <Switch color={"default"} onChange={changeMode} />
           </div>
         </Container>

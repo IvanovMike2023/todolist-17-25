@@ -2,28 +2,22 @@ import {EditableSpan} from "@/common/components/EditableSpan/EditableSpan"
 import {TaskStatus} from "@/common/enums"
 import {useAppDispatch} from "@/common/hooks"
 import type {DomainTask} from "@/features/todolists/api/tasksApi.types"
-import {
-    deleteTaskTC,
-    updateTaskTC,
-    useDeleteTaskMutation,
-    useUpdateTasksItemMutation
-} from "@/features/todolists/api/tasksApi"
-import type {DomainTodolist} from "@/features/todolists/model/todolists-slice"
+import {UpdateTaskModel} from "@/features/todolists/api/tasksApi.types";
+import {useDeleteTaskMutation, useUpdateTasksItemMutation} from "@/features/todolists/api/tasksApi"
 import DeleteIcon from "@mui/icons-material/Delete"
 import Checkbox from "@mui/material/Checkbox"
 import IconButton from "@mui/material/IconButton"
 import ListItem from "@mui/material/ListItem"
 import type {ChangeEvent} from "react"
 import {getListItemSx} from "./TaskItem.styles"
-import {UpdateTaskModel} from "@/features/todolists/api/tasksApi.types";
+import {Todolist} from "@/features/todolists/api/todolistsApi.types";
 
 type Props = {
     task: DomainTask
-    todolist: DomainTodolist
+    todolist: Todolist
 }
 
 export const TaskItem = ({task, todolist}: Props) => {
-    const dispatch = useAppDispatch()
     const [DeleteTask] = useDeleteTaskMutation()
     const [UpdateTask] = useUpdateTasksItemMutation()
     const deleteTask = () => {
@@ -32,7 +26,6 @@ export const TaskItem = ({task, todolist}: Props) => {
 
     const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
 
-        const newStatusValue = e.currentTarget.checked
         let status = e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
         const model: UpdateTaskModel = {
             description: task.description,
@@ -57,15 +50,14 @@ export const TaskItem = ({task, todolist}: Props) => {
     }
 
     const isTaskCompleted = task.status === TaskStatus.Completed
-    const disabled = todolist.entityStatus === "loading"
 
     return (
         <ListItem sx={getListItemSx(isTaskCompleted)}>
             <div>
-                <Checkbox checked={isTaskCompleted} onChange={changeTaskStatus} disabled={disabled}/>
-                <EditableSpan value={task.title} onChange={changeTaskTitle} disabled={disabled}/>
+                <Checkbox checked={isTaskCompleted} onChange={changeTaskStatus} />
+                <EditableSpan value={task.title} onChange={changeTaskTitle} />
             </div>
-            <IconButton onClick={deleteTask} disabled={disabled}>
+            <IconButton onClick={deleteTask} >
                 <DeleteIcon/>
             </IconButton>
         </ListItem>

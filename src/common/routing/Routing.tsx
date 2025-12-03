@@ -3,7 +3,6 @@ import {Login} from "@/features/auth/ui/Login/Login"
 import {Route, Routes} from "react-router"
 import {PrivateRoutes} from "@/common/components/PageNotFound/PrivateRoutes";
 import {useAppSelector} from "@/common/hooks";
-import {selectIsLoggedIn} from "@/features/auth/model/auth-slice";
 import {PageNotFound} from "@/common/components";
 import {selectisLoggedIn} from "@/app/app-slice";
 

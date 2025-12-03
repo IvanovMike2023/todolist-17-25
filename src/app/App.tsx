@@ -7,21 +7,16 @@ import {getTheme} from "@/common/theme"
 import CssBaseline from "@mui/material/CssBaseline"
 import {ThemeProvider} from "@mui/material/styles"
 import React, {useEffect, useState} from "react";
-import {selectIsLoggedIn} from "@/features/auth/model/auth-slice";
 import {useMeQuery} from "@/features/auth/api/_authApi";
 
 export const App = () => {
     const themeMode = useAppSelector(selectThemeMode)
     const dispatch = useAppDispatch()
     const theme = getTheme(themeMode)
-    const [init, setInit] = useState(false)
-    const [isInitialized, setIsInitialized] = useState(false)
-
 
     const { data, isLoading } = useMeQuery()
     useEffect(() => {
         if (!isLoading) {
-            setIsInitialized(true)
             if (data?.resultCode === 0) {
                 dispatch(setIsLoggedIn({ isLoggedIn: true }))
             }
