@@ -14,7 +14,6 @@ export const Tasks = ({todolist, data, filter}: Props) => {
     if (data) {
         filteredTasks = data
     }
-
     if (filter === 1) {
         filteredTasks = data.filter((el) => el.status === 0)
     }
