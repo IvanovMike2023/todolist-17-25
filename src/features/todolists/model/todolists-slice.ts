@@ -21,7 +21,7 @@ export const todolistApi = baseApi.injectEndpoints({
       invalidatesTags: ['Todolist']
     }),
 
-    updateTodolistTitle: build.mutation<BaseResponse,{todolistId:string,title:UpdateTaskModel}>({
+    updateTodolistTitle: build.mutation<BaseResponse,{todolistId:string,title:string}>({
       query: ({todolistId, title}) => {
         return {
           url: `/todo-lists/${todolistId}`,

@@ -4,23 +4,22 @@ import {Todolist} from "@/features/todolists/api/todolistsApi.types";
 import {DomainTask, domainTaskSchema} from "@/features/todolists/api/tasksApi.types";
 
 type Props = {
-    todolist: string
+    todolist: Todolist
     data:  DomainTask[]
     filter: number
 }
 export const Tasks = ({todolist, data, filter}: Props) => {
-    console.log(data)
-    let filteredTasks
-    if (data) {
-        filteredTasks = data
-    }
+    let filteredTasks=data
+    // if (data) {
+    //     filteredTasks = data
+    // }
 
-    if (filter === 1) {
-        filteredTasks = data.filter((el) => el.status === 0)
-    }
-    if (filter === 2) {
-        filteredTasks = data.filter((el) => el.status === 2)
-    }
+    // if (filter === 1) {
+    //     filteredTasks = data.filter((el) => el.status === 0)
+    // }
+    // if (filter === 2) {
+    //     filteredTasks = data.filter((el) => el.status === 2)
+    // }
     return (
         <>
             {filteredTasks?.length === 0 ? (

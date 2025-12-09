@@ -7,25 +7,28 @@ import {CreateItemForm} from "@/common/components/CreateItemForm/CreateItemForm"
 import {useState} from "react";
 import {Todolist} from "@/features/todolists/api/todolistsApi.types";
 import {loginApi} from "@/features/auth/api/1authApi";
+import {any} from "zod";
 
 type Props = {
-  todolist: string
+  todolist: Todolist
 }
 
 export const TodolistItem = ({ todolist }: Props) => {
     const[filter,setFilter]=useState(0)
-    const {data}= useGetTaskQuery(todolist.id)
+    const {data,isLoading}= useGetTaskQuery(todolist.id)
     const [CreateTask]=useCreateTaskMutation()
   const createTask = (title: string) => {
-      CreateTask({ todolistId: todolist.id,title})
+      CreateTask({ todolistId: todolist.id,title:title})
   }
+
+
 const filterselection=(f:number)=>{
     setFilter(f)
 }
   return (
     <div>
       <TodolistTitle todolist={todolist} />
-      <CreateItemForm onCreateItem={createTask} disabled={todolist.entityStatus === "loading"} />
+      <CreateItemForm onCreateItem={createTask} disabled={isLoading} />
       <Tasks filter={filter}  todolist={todolist} data={data?.items} />
       <FilterButtons filterselection={filterselection} todolist={todolist} />
     </div>
