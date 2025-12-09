@@ -1,11 +1,11 @@
 import {TaskItem} from "./TaskItem/TaskItem"
 import List from "@mui/material/List"
 import {Todolist} from "@/features/todolists/api/todolistsApi.types";
-import {domainTaskSchema} from "@/features/todolists/api/tasksApi.types";
+import {DomainTask, domainTaskSchema} from "@/features/todolists/api/tasksApi.types";
 
 type Props = {
     todolist: string
-    data: any
+    data:  DomainTask[]
     filter: number
 }
 export const Tasks = ({todolist, data, filter}: Props) => {
