@@ -1,9 +1,4 @@
-import {
-  type DomainTask,
-  domainTaskSchema,
-  GetTasksResponse,
-  type UpdateTaskModel
-} from "@/features/todolists/api/tasksApi.types"
+import {type DomainTask, type UpdateTaskModel} from "@/features/todolists/api/tasksApi.types"
 import {baseApi} from "@/app/api/baseApi";
 
 export type TasksState = Record<string, DomainTask[]>

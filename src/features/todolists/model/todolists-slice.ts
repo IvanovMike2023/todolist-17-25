@@ -1,4 +1,3 @@
-import {type UpdateTaskModel} from "@/features/todolists/api/tasksApi.types"
 import {baseApi} from "@/app/api/baseApi";
 import {BaseResponse} from "@/common/types";
 import {Todolist} from "@/features/todolists/api/todolistsApi.types";
@@ -11,9 +10,9 @@ export const todolistApi = baseApi.injectEndpoints({
       providesTags: ['Todolist']
     }),
     createTodolist: build.mutation<BaseResponse<{ item: Todolist }>,{title:string}>({
-      query: (title) => {
+      query: ({title}) => {
         return {
-          url: `/todo-lists/`,
+          url: `/todo-lists`,
           method:'POST',
           body: {title}
         }

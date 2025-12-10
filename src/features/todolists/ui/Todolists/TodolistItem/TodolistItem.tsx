@@ -1,4 +1,3 @@
-import {useAppDispatch} from "@/common/hooks"
 import {useCreateTaskMutation, useGetTaskQuery} from "@/features/todolists/api/tasksApi"
 import {FilterButtons} from "./FilterButtons/FilterButtons"
 import {Tasks} from "./Tasks/Tasks"
@@ -6,8 +5,6 @@ import {TodolistTitle} from "./TodolistTitle/TodolistTitle"
 import {CreateItemForm} from "@/common/components/CreateItemForm/CreateItemForm"
 import {useState} from "react";
 import {Todolist} from "@/features/todolists/api/todolistsApi.types";
-import {loginApi} from "@/features/auth/api/1authApi";
-import {any} from "zod";
 
 type Props = {
   todolist: Todolist
@@ -34,3 +31,5 @@ const filterselection=(f:number)=>{
     </div>
   )
 }
+
+
