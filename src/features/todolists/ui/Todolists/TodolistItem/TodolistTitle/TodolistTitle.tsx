@@ -24,7 +24,6 @@ const [UpdateTodolistTitle]=useUpdateTodolistTitleMutation()
 
   const changeTodolistTitle = (title: string) => {
     UpdateTodolistTitle({ todolistId: id, title:title })
-    //dispatch(changeTodolistTitleTC({ id, title }))
   }
 
   return (
