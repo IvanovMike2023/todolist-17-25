@@ -4,8 +4,9 @@ import {baseApi} from "@/app/api/baseApi";
 export type TasksState = Record<string, DomainTask[]>
 
 
+
 export const tasksApi = baseApi.injectEndpoints({
-  endpoints: (build) => ({
+endpoints: (build) => ({
     getTask: build.query<any, string>({
       query: (todolistId:string) => `/todo-lists/${todolistId}/tasks`,
        providesTags: ['Tasks']
