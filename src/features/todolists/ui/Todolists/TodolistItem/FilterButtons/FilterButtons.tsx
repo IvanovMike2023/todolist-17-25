@@ -3,36 +3,42 @@ import {containerSx} from "@/common/styles"
 
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
+import {FilterValues} from "@/features/todolists/api/todolistsApi.types";
+import {todolistApi} from "@/features/todolists/api/todolistsApi";
 
 type Props = {
     todolist: any
-    filterselection: (f: number) => void
 }
 
-export const FilterButtons = ({todolist,filterselection}: Props) => {
+export const FilterButtons = ({todolist}: Props) => {
     const {id, filter} = todolist
-
-    const changeFilter = (filter: number) => {
-        filterselection(filter)
+const dispatch=useAppDispatch()
+    const changeFilter = (filter: FilterValues) => {
+        dispatch(todolistApi.util.updateQueryData('getTodolists',undefined,(todolists)=>{
+            const todolist=todolists.find((todolist)=>todolist.id===id)
+            if(todolist){
+                todolist.filter=filter
+            }
+        }))
     }
 
     return (
         <Box sx={containerSx}>
             <Button variant={filter === "all" ? "outlined" : "text"} color={"inherit"}
-                    onClick={() => changeFilter(0)}>
+                    onClick={() => changeFilter("all")}>
                 All
             </Button>
             <Button
                 variant={filter === "active" ? "outlined" : "text"}
                 color={"primary"}
-                onClick={() => changeFilter(1)}
+                onClick={() => changeFilter("active")}
             >
                 Active
             </Button>
             <Button
                 variant={filter === "completed" ? "outlined" : "text"}
                 color={"secondary"}
-                onClick={() => changeFilter(2)}
+                onClick={() => changeFilter("completed")}
             >
                 Completed
             </Button>

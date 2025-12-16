@@ -3,7 +3,7 @@ import {useAppDispatch} from "@/common/hooks"
 import {
   useDeleteTodolistMutation,
   useUpdateTodolistTitleMutation,
-} from "@/features/todolists/model/todolists-slice"
+} from "@/features/todolists/api/todolistsApi"
 import DeleteIcon from "@mui/icons-material/Delete"
 import IconButton from "@mui/material/IconButton"
 import styles from "./TodolistTitle.module.css"

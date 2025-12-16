@@ -1,25 +1,24 @@
 import {TaskItem} from "./TaskItem/TaskItem"
 import List from "@mui/material/List"
-import {Todolist} from "@/features/todolists/api/todolistsApi.types";
+import {DomainTodolist, Todolist} from "@/features/todolists/api/todolistsApi.types";
 import {DomainTask, domainTaskSchema} from "@/features/todolists/api/tasksApi.types";
 
 type Props = {
-    todolist: Todolist
+    todolist: any
     data:  DomainTask[]
-    filter: number
 }
-export const Tasks = ({todolist, data, filter}: Props) => {
+export const Tasks = ({todolist, data,}: Props) => {
     let filteredTasks=data
-    // if (data) {
-    //     filteredTasks = data
-    // }
+    if (data) {
+        filteredTasks = data
+    }
 
-    // if (filter === 1) {
-    //     filteredTasks = data.filter((el) => el.status === 0)
-    // }
-    // if (filter === 2) {
-    //     filteredTasks = data.filter((el) => el.status === 2)
-    // }
+    if (todolist.filter === 'active') {
+        filteredTasks = data.filter((el) => el.status === 2)
+    }
+    if (todolist.filter === 'completed') {
+        filteredTasks = data.filter((el) => el.status === 1)
+    }
     return (
         <>
             {filteredTasks?.length === 0 ? (
