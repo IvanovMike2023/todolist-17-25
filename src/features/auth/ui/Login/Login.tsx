@@ -15,8 +15,9 @@ import {Controller, type SubmitHandler, useForm} from "react-hook-form"
 import styles from "./Login.module.css"
 import {Navigate, useNavigate} from "react-router";
 import {Path} from "@/common/routing";
-import {useLoginMutation} from "@/features/auth/api/_authApi";
+import {useLoginMutation} from "@/features/auth/api/authApi";
 import {AUTH_TOKEN} from "@/common/constants";
+import {baseApi} from "@/app/api/baseApi";
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -39,7 +40,8 @@ export const Login = () => {
 
   const onSubmit: SubmitHandler<LoginInputs> = (data) => {
     setLogin(data).then((res)=>{
-      if(res.data.resultCode===0){
+      console.log(data)
+      if(res.data?.resultCode===0){
         localStorage.setItem(AUTH_TOKEN, res.data?.data.token);
         dispatch(setIsLoggedIn({ isLoggedIn: true }))
       }

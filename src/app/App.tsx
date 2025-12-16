@@ -6,22 +6,23 @@ import {Routing} from "@/common/routing"
 import {getTheme} from "@/common/theme"
 import CssBaseline from "@mui/material/CssBaseline"
 import {ThemeProvider} from "@mui/material/styles"
-import React, {useEffect, useState} from "react";
-import {useMeQuery} from "@/features/auth/api/_authApi";
+import React, {useEffect} from "react";
+import {useMeQuery} from "@/features/auth/api/authApi";
 
 export const App = () => {
     const themeMode = useAppSelector(selectThemeMode)
     const dispatch = useAppDispatch()
     const theme = getTheme(themeMode)
 
-    const { data, isLoading } = useMeQuery()
+    const { data, isLoading,isFetching ,isSuccess } = useMeQuery()
+    console.log(data)
     useEffect(() => {
-        if (!isLoading) {
+        if (!isFetching) {
             if (data?.resultCode === 0) {
                 dispatch(setIsLoggedIn({ isLoggedIn: true }))
             }
         }
-    }, [isLoading, data])
+    }, [isFetching, data])
 
     return (
         <ThemeProvider theme={theme}>

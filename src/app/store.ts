@@ -5,7 +5,6 @@ import {setupListeners} from "@reduxjs/toolkit/query";
 
 export const store = configureStore({
   reducer: {
-
     [appSlice.name]: appReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },

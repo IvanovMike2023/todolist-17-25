@@ -2,7 +2,6 @@ import {useGetTodolistsQuery} from "@/features/todolists/api/todolistsApi"
 import Grid from "@mui/material/Grid"
 import Paper from "@mui/material/Paper"
 import {TodolistItem} from "./TodolistItem/TodolistItem"
-
 export const Todolists = () => {
     const {data:todolists, isLoading} = useGetTodolistsQuery()
     if (!isLoading) {

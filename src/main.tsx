@@ -5,6 +5,7 @@ import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router"
 import { store } from "./app/store"
 
+console.log(store.getState())
 createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
         <Provider store={store}>

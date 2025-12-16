@@ -9,7 +9,6 @@ import {todolistApi} from "@/features/todolists/api/todolistsApi";
 type Props = {
     todolist: any
 }
-
 export const FilterButtons = ({todolist}: Props) => {
     const {id, filter} = todolist
 const dispatch=useAppDispatch()
