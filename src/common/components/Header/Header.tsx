@@ -27,8 +27,6 @@ export const Header = () => {
   const changeMode = () => {
     dispatch(changeThemeModeAC({ themeMode: themeMode === "light" ? "dark" : "light" }))
   }
-
-  console.log(ResultCode.Success)
   const logoutHandler=()=>{
     Logout().then((res)=>{
         if(res.data?.resultCode===ResultCode.Success){

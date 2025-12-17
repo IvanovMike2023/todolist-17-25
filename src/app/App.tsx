@@ -15,7 +15,6 @@ export const App = () => {
     const theme = getTheme(themeMode)
 
     const { data, isLoading,isFetching ,isSuccess } = useMeQuery()
-    console.log(data)
     useEffect(() => {
         if (!isFetching) {
             if (data?.resultCode === 0) {
