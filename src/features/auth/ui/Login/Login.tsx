@@ -40,7 +40,6 @@ export const Login = () => {
 
   const onSubmit: SubmitHandler<LoginInputs> = (data) => {
     setLogin(data).then((res)=>{
-      console.log(data)
       if(res.data?.resultCode===0){
         localStorage.setItem(AUTH_TOKEN, res.data?.data.token);
         dispatch(setIsLoggedIn({ isLoggedIn: true }))

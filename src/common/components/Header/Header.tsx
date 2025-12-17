@@ -15,6 +15,7 @@ import {AUTH_TOKEN} from "@/common/constants";
 import {baseApi} from "@/app/api/baseApi";
 import {ResultCode} from "@/common/enums";
 import {BaseResponse, FieldError} from "@/common/types";
+import {todolistApi} from "@/features/todolists/api/todolistsApi";
 
 export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -33,8 +34,9 @@ export const Header = () => {
         if(res.data?.resultCode===ResultCode.Success){
           localStorage.removeItem(AUTH_TOKEN);
           dispatch(setIsLoggedIn({ isLoggedIn: false }))
-          dispatch(baseApi.util.resetApiState())
         }
+    }).then(()=>{
+      dispatch(todolistApi.util.invalidateTags(['Todolist']))
     })
 }
   return (
