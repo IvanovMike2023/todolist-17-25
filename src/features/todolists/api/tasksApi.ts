@@ -1,4 +1,4 @@
-import {type DomainTask, type UpdateTaskModel} from "@/features/todolists/api/tasksApi.types"
+import {type DomainTask, GetTasksResponse, type UpdateTaskModel} from "@/features/todolists/api/tasksApi.types"
 import {baseApi} from "@/app/api/baseApi";
 
 export type TasksState = Record<string, DomainTask[]>
@@ -7,7 +7,7 @@ export type TasksState = Record<string, DomainTask[]>
 
 export const tasksApi = baseApi.injectEndpoints({
 endpoints: (build) => ({
-    getTask: build.query<any, string>({
+    getTask: build.query<GetTasksResponse, string>({
       query: (todolistId:string) => `/todo-lists/${todolistId}/tasks`,
        providesTags: ['Tasks']
     }),
