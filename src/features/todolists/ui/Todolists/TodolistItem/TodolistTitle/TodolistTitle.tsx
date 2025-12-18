@@ -30,7 +30,7 @@ export const TodolistTitle = ({todolist}: Props) => {
     }
 
     const deleteTodolistHandler = () => {
-        deleteTodolist({todolistId: id}).catch(() => {
+        deleteTodolist({todolistId: id}).unwrap().catch(() => {
             changeTodolistUtils('loading')
         })
 
