@@ -3,8 +3,6 @@ import {baseApi} from "@/app/api/baseApi";
 
 export type TasksState = Record<string, DomainTask[]>
 
-
-
 export const tasksApi = baseApi.injectEndpoints({
 endpoints: (build) => ({
     getTask: build.query<GetTasksResponse, string>({
