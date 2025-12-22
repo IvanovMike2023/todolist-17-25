@@ -21,7 +21,6 @@ export type GetTasksResponse = {
   totalCount: number
   items: DomainTask[]
 }
-
 export type UpdateTaskModel = {
   description: string | null
   title: string
