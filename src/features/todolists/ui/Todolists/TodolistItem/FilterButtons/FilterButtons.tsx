@@ -11,12 +11,12 @@ type Props = {
 }
 export const FilterButtons = ({todolist}: Props) => {
     const {id, filter} = todolist
-const dispatch=useAppDispatch()
+    const dispatch = useAppDispatch()
     const changeFilter = (filter: FilterValues) => {
-        dispatch(todolistApi.util.updateQueryData('getTodolists',undefined,(todolists)=>{
-            const todolist=todolists.find((todolist)=>todolist.id===id)
-            if(todolist){
-                todolist.filter=filter
+        dispatch(todolistApi.util.updateQueryData('getTodolists', undefined, (todolists) => {
+            const todolist = todolists.find((todolist) => todolist.id === id)
+            if (todolist) {
+                todolist.filter = filter
             }
         }))
     }

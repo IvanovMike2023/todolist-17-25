@@ -3,7 +3,6 @@ import List from "@mui/material/List"
 import {useGetTaskQuery} from "@/features/todolists/api/tasksApi";
 import {TaskSkeleton} from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskSkeleton/TasksSkeleton";
 import {useEffect} from "react";
-import {handleServerAppError} from "@/common/utils";
 import {useAppDispatch} from "@/common/hooks";
 import {setAppErrorAC} from "@/app/app-slice";
 
@@ -11,20 +10,20 @@ type Props = {
     todolist: any
 }
 export const Tasks = ({todolist}: Props) => {
-const dispatch=useAppDispatch()
+    const dispatch = useAppDispatch()
 
     const {data, isLoading, error} = useGetTaskQuery(todolist.id)
-    useEffect(() => {
-        if (error) {
-            if ('status' in error) {
-                const errMsg = 'error' in error ? error.error : JSON.stringify(error)
-                console.log(errMsg)
-                 dispatch(setAppErrorAC({error:errMsg}))
-            }else{
-                debugger
-            }
-        }
-    }, [error])
+    // useEffect(() => {
+    //     if (error) {
+    //         if ('status' in error) {
+    //             const errMsg = 'error' in error ? error.error : JSON.stringify(error)
+    //             console.log(errMsg)
+    //             dispatch(setAppErrorAC({error: errMsg}))
+    //         } else {
+    //             dispatch(setAppErrorAC({error: error.message || 'Some error occurred'}))
+    //         }
+    //     }
+    // }, [error])
     if (isLoading) {
         return <TaskSkeleton/>
     }
@@ -32,17 +31,12 @@ const dispatch=useAppDispatch()
     if (data?.items) {
         filteredTasks = data.items
     }
-
     if (todolist.filter === 'active') {
         filteredTasks = data?.items.filter((el) => el.status === 2)
     }
     if (todolist.filter === 'completed') {
         filteredTasks = data?.items.filter((el) => el.status === 1)
     }
-
-
-
-
     return (
         <>
             {filteredTasks?.length === 0 ? (
