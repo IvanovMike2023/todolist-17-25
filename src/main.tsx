@@ -19,6 +19,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { useEffect } from "react"
 import { createRoot } from "react-dom/client"
 import { Provider, useDispatch, useSelector } from "react-redux"
+import {isErrorWithMessage} from "@/common/utils";
 
 // Slice
 const appSlice = createSlice({
@@ -61,9 +62,6 @@ const api = createApi({
         if (result.error) {
             if (result.error.status === 400) {
                 const error = (result.error.data as Error).errors[0].message
-                let r =(result.error.data as Error).errors[0].message
-                console.log(r)
-                //let mes = error.length ? onmessage : 'error'
                 api.dispatch(setError({ error }))
 
             }
