@@ -14,165 +14,165 @@
 // )
 
 //
-import { configureStore, createSlice } from "@reduxjs/toolkit"
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import { useEffect } from "react"
-import { createRoot } from "react-dom/client"
-import { Provider, useDispatch, useSelector } from "react-redux"
-import {isErrorWithMessage} from "@/common/utils";
-
-// Slice
-const appSlice = createSlice({
-    name: "app",
-    initialState: {
-        error: null as string | null,
-    },
-    reducers: (create) => ({
-        setError: create.reducer<{ error: string | null }>((state, action) => {
-            state.error = action.payload.error
-        }),
-    }),
-    selectors: {
-        selectError: (state) => state.error,
-    },
-})
-
-const { selectError } = appSlice.selectors
-const { setError } = appSlice.actions
-
-// Api
-type Post = {
-    body: string
-    id: string
-    title: string
-    userId: string
-}
-
-type Error = {
-    errors: { field: string; message: string }[]
-}
-
-const api = createApi({
-    reducerPath: "api",
-    baseQuery: async (args, api, extraOptions) => {
-        const result = await fetchBaseQuery({
-            baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/",
-        })(args, api, extraOptions)
-
-        if (result.error) {
-            if (result.error.status === 400) {
-                const error = (result.error.data as Error).errors[0].message
-                api.dispatch(setError({ error }))
-
-            }
-        }
-        return result
-    },
-    tagTypes: ["Post"],
-    endpoints: (builder) => ({
-        getPosts: builder.query<Post[], void>({
-            query: () => "posts",
-            providesTags: ["Post"],
-        }),
-        removePost: builder.mutation<{ message: string }, string>({
-            query: (id) => ({
-                method: "DELETE",
-                url: `posts/${id}?delay=20`,
-            }),
-            invalidatesTags: ["Post"],
-        }),
-    }),
-})
-
-const { useGetPostsQuery, useRemovePostMutation } = api
-
-// UI
-const Header = () => <div style={{ width: "100%", background: "gray", border: "none", height: "50px" }}>header</div>
-
-const LinearProgress = () => (
-    <hr
-        style={{
-            height: "10px",
-            width: "100%",
-            background: "lightblue",
-            border: "none",
-            position: "absolute",
-            left: "0px",
-            top: "50px",
-            right: "0px",
-        }}
-    />
-)
-
-const App = () => {
-    const error = useSelector(selectError)
-
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        setTimeout(() => {
-            dispatch(setError({ error: null }))
-        }, 4000)
-    }, [error])
-
-    return (
-        <>
-            <Header />
-            {error && <h1 style={{ color: "red" }}>{error}</h1>}
-            <Posts />
-        </>
-    )
-}
-
-const Posts = () => {
-    const { data, isSuccess, isLoading: isPostsLoading } = useGetPostsQuery()
-    const [removePost, { isLoading: isRemovePostLoading }] = useRemovePostMutation()
-
-    const deletePostHandler = (id: string) => {
-        removePost(id)
-    }
-
-    if (isPostsLoading || isRemovePostLoading) {
-        return <LinearProgress />
-    }
-
-    return (
-        <>
-            {isSuccess && (
-                <>
-                    <h2>Posts</h2>
-                    {data?.map((el) => {
-                        return (
-                            <div key={el.id} style={{ display: "flex", alignItems: "center" }}>
-                                <div style={{ border: "1px solid", margin: "5px", padding: "5px", width: "200px" }}>
-                                    <p>
-                                        <b>title</b> - {el.title}
-                                    </p>
-                                </div>
-                                <button onClick={() => deletePostHandler(el.id)}>Delete post</button>
-                            </div>
-                        )
-                    })}
-                </>
-            )}
-        </>
-    )
-}
-
-// Store
-const store = configureStore({
-    reducer: {
-        [appSlice.name]: appSlice.reducer,
-        [api.reducerPath]: api.reducer,
-    },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
-})
-
-createRoot(document.getElementById("root")!).render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-)
+// import { configureStore, createSlice } from "@reduxjs/toolkit"
+// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+// import { useEffect } from "react"
+// import { createRoot } from "react-dom/client"
+// import { Provider, useDispatch, useSelector } from "react-redux"
+// import {isErrorWithMessage} from "@/common/utils";
+//
+// // Slice
+// const appSlice = createSlice({
+//     name: "app",
+//     initialState: {
+//         error: null as string | null,
+//     },
+//     reducers: (create) => ({
+//         setError: create.reducer<{ error: string | null }>((state, action) => {
+//             state.error = action.payload.error
+//         }),
+//     }),
+//     selectors: {
+//         selectError: (state) => state.error,
+//     },
+// })
+//
+// const { selectError } = appSlice.selectors
+// const { setError } = appSlice.actions
+//
+// // Api
+// type Post = {
+//     body: string
+//     id: string
+//     title: string
+//     userId: string
+// }
+//
+// type Error = {
+//     errors: { field: string; message: string }[]
+// }
+//
+// const api = createApi({
+//     reducerPath: "api",
+//     baseQuery: async (args, api, extraOptions) => {
+//         const result = await fetchBaseQuery({
+//             baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/",
+//         })(args, api, extraOptions)
+//
+//         if (result.error) {
+//             if (result.error.status === 400) {
+//                 console.log((result.error.data as Error).errors[0].message)
+//                 const error = (result.error.data as Error).errors[0].message
+//                 api.dispatch(setError({ error }))
+//             }
+//         }
+//         return result
+//     },
+//     tagTypes: ["Post"],
+//     endpoints: (builder) => ({
+//         getPosts: builder.query<Post[], void>({
+//             query: () => "posts",
+//             providesTags: ["Post"],
+//         }),
+//         removePost: builder.mutation<{ message: string }, string>({
+//             query: (id) => ({
+//                 method: "DELETE",
+//                 url: `posts/${id}?delay=20`,
+//             }),
+//             invalidatesTags: ["Post"],
+//         }),
+//     }),
+// })
+//
+// const { useGetPostsQuery, useRemovePostMutation } = api
+//
+// // UI
+// const Header = () => <div style={{ width: "100%", background: "gray", border: "none", height: "50px" }}>header</div>
+//
+// const LinearProgress = () => (
+//     <hr
+//         style={{
+//             height: "10px",
+//             width: "100%",
+//             background: "lightblue",
+//             border: "none",
+//             position: "absolute",
+//             left: "0px",
+//             top: "50px",
+//             right: "0px",
+//         }}
+//     />
+// )
+//
+// const App = () => {
+//     const error = useSelector(selectError)
+//
+//     const dispatch = useDispatch()
+//
+//     useEffect(() => {
+//         setTimeout(() => {
+//             dispatch(setError({ error: null }))
+//         }, 4000)
+//     }, [error])
+//
+//     return (
+//         <>
+//             <Header />
+//             {error && <h1 style={{ color: "red" }}>{error}</h1>}
+//             <Posts />
+//         </>
+//     )
+// }
+//
+// const Posts = () => {
+//     const { data, isSuccess, isLoading: isPostsLoading } = useGetPostsQuery()
+//     const [removePost, { isLoading: isRemovePostLoading }] = useRemovePostMutation()
+//
+//     const deletePostHandler = (id: string) => {
+//         removePost(id)
+//     }
+//
+//     if (isPostsLoading || isRemovePostLoading) {
+//         return <LinearProgress />
+//     }
+//
+//     return (
+//         <>
+//             {isSuccess && (
+//                 <>
+//                     <h2>Posts</h2>
+//                     {data?.map((el) => {
+//                         return (
+//                             <div key={el.id} style={{ display: "flex", alignItems: "center" }}>
+//                                 <div style={{ border: "1px solid", margin: "5px", padding: "5px", width: "200px" }}>
+//                                     <p>
+//                                         <b>title</b> - {el.title}
+//                                     </p>
+//                                 </div>
+//                                 <button onClick={() => deletePostHandler(el.id)}>Delete post</button>
+//                             </div>
+//                         )
+//                     })}
+//                 </>
+//             )}
+//         </>
+//     )
+// }
+//
+// // Store
+// const store = configureStore({
+//     reducer: {
+//         [appSlice.name]: appSlice.reducer,
+//         [api.reducerPath]: api.reducer,
+//     },
+//     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
+// })
+//
+// createRoot(document.getElementById("root")!).render(
+//     <Provider store={store}>
+//         <App />
+//     </Provider>,
+// )
 
 // 📜 Описание:
 // Нажмите на кнопку удаления поста. Пост не удалится.
@@ -271,3 +271,91 @@ createRoot(document.getElementById("root")!).render(
 // Что нужно написать вместо `// ❗❗❗XXX❗❗❗`, чтобы реализовать данную задачу
 // ❗Изменение стейта должно быть написано мутабельным образом
 // ❗updateRecipe коллбек в качетстве аргумента принимает стейт. Назовите эту переменную state
+//
+//
+// import { configureStore } from "@reduxjs/toolkit"
+// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+// import { createRoot } from "react-dom/client"
+// import { Provider } from "react-redux"
+//
+// // Types
+// type Todolist = {
+//     id: string
+//     title: string
+//     order: number
+//     createdAt: string
+//     updatedAt: string
+//     completed: boolean
+// }
+//
+// const api = createApi({
+//     reducerPath: "api",
+//     baseQuery: async (args, api, extraOptions) => {
+//         await new Promise((resolve) => setTimeout(resolve, 1000)) // Эмуляция задержки
+//
+//         return fetchBaseQuery({ baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/" })(args, api, extraOptions)
+//     },
+//     endpoints: (builder) => {
+//         const url = Math.random() < 0.5 ? "todos" : "todos👺"
+//         return {
+//             todolists: builder.query<Todolist[], void>({
+//                 query: () => url,
+//             }),
+//         }
+//     },
+// })
+//
+// const { useTodolistsQuery } = api
+//
+// // Component
+// const App = () => {
+//     // ❗Использовать деструктуризацию запрещено
+//     const data = useTodolistsQuery()
+//     console.log(data)
+//     return (
+//         <>
+//             {
+//                 <>
+//                     {data.data?.map((t) => {
+//                         return (
+//                             <div style={t.completed ? { color: "grey" } : {}} key={t.id}>
+//                                 <input type="checkbox" checked={t.completed} />
+//                                 <b>Описание</b>: {t.title}
+//                             </div>
+//                         )
+//                     })}
+//                 </>
+//             }
+//             {data.isLoading && <h2>Загрузка...</h2>}
+//             {data.isSuccess && <h2>👩‍💻 Секретный код: BHOlh#</h2>}
+//             {data.isError && <h2> Error: 👺👺👺</h2>}
+//         </>
+//     )
+// }
+//
+// // Store
+// const store = configureStore({
+//     reducer: {
+//         [api.reducerPath]: api.reducer,
+//     },
+//     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
+// })
+//
+// createRoot(document.getElementById("root")!).render(
+//     <Provider store={store}>
+//         <App />
+//     </Provider>,
+// )
+
+// 📜 Описание:
+// Тудулисты с вероятностью в 50% подгружаюся успешно или падают с ошибкой.
+// Но изначально на экране мы видим: Загрузку, секретный код и сообщение об ошибке
+
+// 🪛 Задача:
+// Что нужно написать вместо "❗X","❗Y" и "❗Z" для того, чтобы:
+// 1. Загрузка показывалась только во время загрузки
+// 2. Секретный код показывалась только если запрос прошел успешно
+// 3. Ошибка показывалась только в случае ошибки
+
+// ❗ Ответ дайте через пробел
+// 🖥 Пример ответа: one two three
