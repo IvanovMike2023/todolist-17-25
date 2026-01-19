@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 import {useAppDispatch} from "@/common/hooks";
 import {setAppErrorAC} from "@/app/app-slice";
 import {Pagination} from "@/common/Pagination/Pagination";
+import {PAGE_SIZE} from "@/common/constants";
 
 type Props = {
     todolist: any
@@ -13,8 +14,8 @@ type Props = {
 export const Tasks = ({todolist}: Props) => {
 
     const [page, setPage] = useState(1)
-    const [pageSize, setPageSize] = useState(4)
-    const {data, isLoading, error} = useGetTaskQuery({todolistId:todolist.id,params:{page}})
+    const [pageSize, setPageSize] = useState(PAGE_SIZE)
+    const {data, isLoading, error} = useGetTaskQuery({todolistId: todolist.id, params: {page}})
 
     if (isLoading) {
         return <TaskSkeleton/>
@@ -35,11 +36,12 @@ export const Tasks = ({todolist}: Props) => {
                 <p>Тасок нет</p>
             ) : (
                 <List>{filteredTasks?.map((task) => <TaskItem key={task.id} task={task}
-                                                              todolist={todolist}/>)}<Pagination
-                    currentPage={page}
-                    pageSize={pageSize}
-                    setCurrentPage={setPage}
-                    pagesCount={data?.totalCount || 1}
+                                                              todolist={todolist}/>)}
+                    <Pagination
+                        currentPage={page}
+                        pageSize={pageSize}
+                        setCurrentPage={setPage}
+                        count={Math.ceil((data?.totalCount || 1)/pageSize)}
                     /></List>
             )}
         </>

@@ -4,13 +4,13 @@ import {getPaginationPages} from "@/common/utils";
 type Props = {
     currentPage: number
     setCurrentPage: (page: number) => void
-    pagesCount: number
+    count: number
     pageSize: number
 }
 
-export const Pagination = ({currentPage, setCurrentPage, pagesCount,pageSize}: Props) => {
-    if (pagesCount <= 1) return null
-    const pages = getPaginationPages(currentPage, Math.ceil(pagesCount/pageSize))
+export const Pagination = ({currentPage, setCurrentPage, count,pageSize}: Props) => {
+    if (count <= 1) return null
+    const pages = getPaginationPages(currentPage,count)
     return (
         <div className={s.container}>
         <div className={s.pagination}>
