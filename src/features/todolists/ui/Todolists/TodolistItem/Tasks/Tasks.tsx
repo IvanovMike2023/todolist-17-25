@@ -14,7 +14,6 @@ type Props = {
 export const Tasks = ({todolist}: Props) => {
 
     const [page, setPage] = useState(1)
-    const [pageSize, setPageSize] = useState(PAGE_SIZE)
     const {data, isLoading, error} = useGetTaskQuery({todolistId: todolist.id, params: {page}})
 
     if (isLoading) {
@@ -39,9 +38,8 @@ export const Tasks = ({todolist}: Props) => {
                                                               todolist={todolist}/>)}
                     <Pagination
                         currentPage={page}
-                        pageSize={pageSize}
                         setCurrentPage={setPage}
-                        count={Math.ceil((data?.totalCount || 1)/pageSize)}
+                        count={Math.ceil((data?.totalCount || 1) / PAGE_SIZE)}
                     /></List>
             )}
         </>
