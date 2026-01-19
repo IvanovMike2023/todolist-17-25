@@ -9,11 +9,11 @@ import {Pagination} from "@/common/Pagination/Pagination";
 
 type Props = {
     todolist: any
-    page:number
 }
-export const Tasks = ({todolist,page}: Props) => {
+export const Tasks = ({todolist}: Props) => {
 
-
+    const [page, setPage] = useState(1)
+    const [pageSize, setPageSize] = useState(4)
     const {data, isLoading, error} = useGetTaskQuery({todolistId:todolist.id,params:{page}})
 
     if (isLoading) {
@@ -35,7 +35,12 @@ export const Tasks = ({todolist,page}: Props) => {
                 <p>Тасок нет</p>
             ) : (
                 <List>{filteredTasks?.map((task) => <TaskItem key={task.id} task={task}
-                                                              todolist={todolist}/>)}</List>
+                                                              todolist={todolist}/>)}<Pagination
+                    currentPage={page}
+                    pageSize={pageSize}
+                    setCurrentPage={setPage}
+                    pagesCount={data?.totalCount || 1}
+                    /></List>
             )}
         </>
     )
