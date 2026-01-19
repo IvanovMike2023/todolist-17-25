@@ -1,12 +1,14 @@
 import {type DomainTask, GetTasksResponse, type UpdateTaskModel} from "@/features/todolists/api/tasksApi.types"
 import {baseApi} from "@/app/api/baseApi";
+import {PAGE_SIZE} from "@/common/constants";
 
 export const tasksApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
-        getTask: build.query<GetTasksResponse, { todolistId: string, params: { count: number, page: number } }>({
+        getTask: build.query<GetTasksResponse, { todolistId: string, params: { page: number } }>({
             query: ({todolistId, params}) => {
                 return {
-                    url: `/todo-lists/${todolistId}/tasks`, params
+                    url: `/todo-lists/${todolistId}/tasks`,
+                params:{...params,count:PAGE_SIZE}
                 }
             },
             providesTags: (res, err, {todolistId}) =>
