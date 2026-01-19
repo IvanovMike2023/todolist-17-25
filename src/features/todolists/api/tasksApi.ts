@@ -1,10 +1,5 @@
 import {type DomainTask, GetTasksResponse, type UpdateTaskModel} from "@/features/todolists/api/tasksApi.types"
 import {baseApi} from "@/app/api/baseApi";
-import {loginSchema} from "@/features/auth/lib/schemas";
-import {nanoid} from "@reduxjs/toolkit";
-
-export type TasksState = Record<string, DomainTask[]>
-
 
 export const tasksApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
