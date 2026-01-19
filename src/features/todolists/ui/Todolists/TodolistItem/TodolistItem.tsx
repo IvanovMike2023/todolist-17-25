@@ -10,7 +10,7 @@ type Props = {
 }
 
 export const TodolistItem = ({ todolist }: Props) => {
-    const {data,isLoading}= useGetTaskQuery(todolist.id)
+    const {data,isLoading}= useGetTaskQuery({todolistId:todolist.id,params:{page:1,count:4}})
     const [CreateTask]=useCreateTaskMutation()
   const createTask = (title: string) => {
       CreateTask({ todolistId: todolist.id,title:title})

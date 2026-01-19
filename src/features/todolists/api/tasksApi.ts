@@ -1,13 +1,20 @@
 import {type DomainTask, GetTasksResponse, type UpdateTaskModel} from "@/features/todolists/api/tasksApi.types"
 import {baseApi} from "@/app/api/baseApi";
+import {loginSchema} from "@/features/auth/lib/schemas";
 
 export type TasksState = Record<string, DomainTask[]>
 
 
 export const tasksApi = baseApi.injectEndpoints({
 endpoints: (build) => ({
-    getTask: build.query<GetTasksResponse, string>({
-      query: (todolistId:string) => `/todo-lists/${todolistId}/tasks`,
+    getTask: build.query<GetTasksResponse, {todolistId:string,params:{count:number,page:number}}>({
+      query: ({todolistId,params}) => {
+          return {
+              url: `/todo-lists/${todolistId}/tasks`,params
+          }
+      }
+
+    ,
        providesTags: ['Tasks']
     }),
     updateTasksItem: build.mutation<void, {todolistId:string,taskId:string,model: UpdateTaskModel }>({
