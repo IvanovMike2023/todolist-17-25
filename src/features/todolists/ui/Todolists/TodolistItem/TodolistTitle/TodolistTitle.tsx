@@ -16,21 +16,20 @@ type Props = {
 
 export const TodolistTitle = ({todolist}: Props) => {
     const {id, title, status} = todolist
-    const [deleteTodolist] = useDeleteTodolistMutation()
-    const [UpdateTodolistTitle] = useUpdateTodolistTitleMutation()
+  const [deleteTodolist] = useDeleteTodolistMutation()
     const dispatch = useAppDispatch()
 
     const changeTodolistUtils = (value: string) => {
         dispatch(todolistApi.util.updateQueryData('getTodolists', undefined, (st) => {
-            const todolist2 = st.find((fl) => fl.id === id)
-            if (todolist2) {
-                todolist2.title = value
+            const newtodolist = st.find((fl) => fl.id === id)
+            if (newtodolist) {
+                newtodolist.title = value
             }
         }))
     }
 
     const deleteTodolistHandler = () => {
-        deleteTodolist({todolistId: id}).unwrap().catch(() => {
+        deleteTodolist(id).unwrap().catch(() => {
             changeTodolistUtils('loading')
         })
 

@@ -1,6 +1,7 @@
 import {type DomainTask, GetTasksResponse, type UpdateTaskModel} from "@/features/todolists/api/tasksApi.types"
 import {baseApi} from "@/app/api/baseApi";
 import {loginSchema} from "@/features/auth/lib/schemas";
+import {nanoid} from "@reduxjs/toolkit";
 
 export type TasksState = Record<string, DomainTask[]>
 
@@ -12,10 +13,16 @@ endpoints: (build) => ({
           return {
               url: `/todo-lists/${todolistId}/tasks`,params
           }
-      }
+      },
+       providesTags:(res, err,id)=>
+        res ? res.items.map((task) => {
+               return {type: 'Tasks', id: task.id}
+           }) : ['Tasks']
 
-    ,
-       providesTags: ['Tasks']
+           //return [{type: 'Tasks', id: nanoid()}]
+
+           //? [...res.items.map(({ id }) => ({ type: "Tasks", id }) as const), { type: "Tasks", id: todolistId }]
+            //['Tasks']
     }),
     updateTasksItem: build.mutation<void, {todolistId:string,taskId:string,model: UpdateTaskModel }>({
       query: (data) => {
@@ -26,7 +33,7 @@ endpoints: (build) => ({
           body:model
         }
       },
-      invalidatesTags: ['Tasks']
+        invalidatesTags: ['Tasks']//(res,err,{taskId})=> [{type:'Tasks',id:taskId}],
     }),
     createTask: build.mutation<void,{todolistId:string,title:string}>({
       query: ({todolistId, title}) => {
@@ -36,11 +43,11 @@ endpoints: (build) => ({
           body: {title}
         }
       },
-      invalidatesTags: ['Tasks']
+        invalidatesTags:['Tasks'] //(res,err,{todolistId})=> [{type:'Tasks', id:todolistId }],
     }),
     deleteTask: build.mutation<void,{todolistId:string,taskId:string}>({
       query: ({todolistId, taskId}) => ({url: `/todo-lists/${todolistId}/tasks/${taskId}`, method: 'delete'}),
-      invalidatesTags: ['Tasks']
+      invalidatesTags: ['Tasks']//(res,err,{taskId})=> [{type:'Tasks',id:taskId}],
     })
   }),
 
