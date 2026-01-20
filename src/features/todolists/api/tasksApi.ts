@@ -1,6 +1,7 @@
 import {type DomainTask, GetTasksResponse, type UpdateTaskModel} from "@/features/todolists/api/tasksApi.types"
 import {baseApi} from "@/app/api/baseApi";
 import {PAGE_SIZE} from "@/common/constants";
+import {loginSchema} from "@/features/auth/lib/schemas";
 
 export const tasksApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
@@ -8,7 +9,7 @@ export const tasksApi = baseApi.injectEndpoints({
             query: ({todolistId, params}) => {
                 return {
                     url: `/todo-lists/${todolistId}/tasks`,
-                params:{...params,count:PAGE_SIZE}
+                    params: {...params, count: PAGE_SIZE}
                 }
             },
             providesTags: (res, err, {todolistId}) =>
@@ -21,6 +22,22 @@ export const tasksApi = baseApi.injectEndpoints({
                     url: `/todo-lists/${todolistId}/tasks/${taskId}`,
                     method: 'PUT',
                     body: model
+                }
+            },
+            onQueryStarted: async ({todolistId, taskId, model}, {dispatch, queryFulfilled}) => {
+                const patchResult = dispatch(tasksApi.util.updateQueryData('getTask', {
+                    todolistId,
+                    params: {page: 1}
+                }, (state) => {
+                    const item = state.items.find(i => i.id === taskId);
+                    if (item) {
+                        item.status = model.status;
+                    }
+                }))
+                try {
+                    await queryFulfilled
+                } catch (e) {
+                    patchResult.undo()
                 }
             },
             invalidatesTags: (_res, _err, {todolistId}) =>

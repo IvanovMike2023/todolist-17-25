@@ -15,7 +15,7 @@ export const Tasks = ({todolist}: Props) => {
 
     const [page, setPage] = useState(1)
     const {data, isLoading, error} = useGetTaskQuery({todolistId: todolist.id, params: {page}})
-
+    console.log(data)
     if (isLoading) {
         return <TaskSkeleton/>
     }
