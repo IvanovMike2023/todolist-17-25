@@ -14,7 +14,7 @@ type Props = {
 export const Tasks = ({todolist}: Props) => {
 
     const [page, setPage] = useState(1)
-    const {data, isLoading, error} = useGetTaskQuery({todolistId: todolist.id, params: {page}})
+    const {data, isLoading} = useGetTaskQuery({todolistId: todolist.id, params: {page}})
     if (isLoading) {
         return <TaskSkeleton/>
     }

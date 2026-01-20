@@ -32,7 +32,6 @@ export const tasksApi = baseApi.injectEndpoints({
                     if (index !== -1) {
                         state.items[index] = {...state.items[index], ...model}
                     }
-
                 }))
                 try {
                     await queryFulfilled

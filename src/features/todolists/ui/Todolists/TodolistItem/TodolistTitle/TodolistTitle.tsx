@@ -15,9 +15,7 @@ export const TodolistTitle = ({todolist}: Props) => {
     const [UpdateTodolistTitle] = useUpdateTodolistTitleMutation()
 
     const deleteTodolistHandler = async () => deleteTodolist(id)
-
     const changeTodolistTitle = (title: string) => UpdateTodolistTitle({todolistId: id, title: title})
-
 
     return (
         <div className={styles.container}>
