@@ -1,7 +1,6 @@
-import {type DomainTask, GetTasksResponse, type UpdateTaskModel} from "@/features/todolists/api/tasksApi.types"
+import {GetTasksResponse, type UpdateTaskModel} from "@/features/todolists/api/tasksApi.types"
 import {baseApi} from "@/app/api/baseApi";
 import {PAGE_SIZE} from "@/common/constants";
-import {loginSchema} from "@/features/auth/lib/schemas";
 
 export const tasksApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
@@ -31,7 +30,7 @@ export const tasksApi = baseApi.injectEndpoints({
                 }, (state) => {
                     const index = state.items.findIndex(todo => todo.id === taskId)
                     if (index !== -1) {
-                        state.items[index] ={...state.items[index],...model}
+                        state.items[index] = {...state.items[index], ...model}
                     }
 
                 }))
