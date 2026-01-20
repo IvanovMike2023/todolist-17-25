@@ -8,7 +8,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete"
 import IconButton from "@mui/material/IconButton"
 import styles from "./TodolistTitle.module.css"
-import {DomainTodolist, Todolist} from "@/features/todolists/api/todolistsApi.types";
+import {DomainTodolist, StatusValues, Todolist} from "@/features/todolists/api/todolistsApi.types";
 
 type Props = {
     todolist: DomainTodolist
@@ -16,27 +16,26 @@ type Props = {
 
 export const TodolistTitle = ({todolist}: Props) => {
     const {id, title, status} = todolist
-  const [deleteTodolist] = useDeleteTodolistMutation()
+    const [deleteTodolist] = useDeleteTodolistMutation()
+    const [UpdateTodolistTitle] = useUpdateTodolistTitleMutation()
     const dispatch = useAppDispatch()
 
-    const changeTodolistUtils = (value: string) => {
-        dispatch(todolistApi.util.updateQueryData('getTodolists', undefined, (st) => {
-            const newtodolist = st.find((fl) => fl.id === id)
+    const deleteTodolistHandler = async () => {
+        const patchResult = dispatch(todolistApi.util.updateQueryData('getTodolists', undefined, (state) => {
+            const newtodolist = state.find((fl) => fl.id === id)
             if (newtodolist) {
-                newtodolist.title = value
+                console.log(newtodolist)
+                newtodolist.status = 'loading'
             }
         }))
-    }
-
-    const deleteTodolistHandler = () => {
-        deleteTodolist(id).unwrap().catch(() => {
-            changeTodolistUtils('loading')
-        })
-
+        try {
+            await deleteTodolist(id).unwrap()
+        } catch (e) {
+            patchResult.undo()
+        }
     }
     const changeTodolistTitle = (title: string) => {
-        //UpdateTodolistTitle({ todolistId: id, title:title })
-        changeTodolistUtils(title)
+        UpdateTodolistTitle({todolistId: id, title: title})
     }
 
     return (
