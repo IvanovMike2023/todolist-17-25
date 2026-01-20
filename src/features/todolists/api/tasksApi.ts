@@ -29,10 +29,11 @@ export const tasksApi = baseApi.injectEndpoints({
                     todolistId,
                     params: {page: 1}
                 }, (state) => {
-                    const item = state.items.find(i => i.id === taskId);
-                    if (item) {
-                        item.status = model.status;
+                    const index = state.items.findIndex(todo => todo.id === taskId)
+                    if (index !== -1) {
+                        state.items[index] ={...state.items[index],...model}
                     }
+
                 }))
                 try {
                     await queryFulfilled
