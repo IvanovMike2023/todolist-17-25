@@ -22,11 +22,10 @@ export const TodolistTitle = ({todolist}: Props) => {
 
     const deleteTodolistHandler = async () => {
         const patchResult = dispatch(todolistApi.util.updateQueryData('getTodolists', undefined, (state) => {
-            const newtodolist = state.find((fl) => fl.id === id)
-            if (newtodolist) {
-                console.log(newtodolist)
-                newtodolist.status = 'loading'
-            }
+            const index = state.findIndex(todo => {
+                return todo.id === id
+            })
+            if (index !== -1) state.splice(index, 1)
         }))
         try {
             await deleteTodolist(id).unwrap()
