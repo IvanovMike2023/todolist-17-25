@@ -8,7 +8,6 @@ import {DomainTodolist} from "@/features/todolists/api/todolistsApi.types";
 type Props = {
     todolist: DomainTodolist
 }
-
 export const TodolistTitle = ({todolist}: Props) => {
     const {id, title, status} = todolist
     const [deleteTodolist] = useDeleteTodolistMutation()
