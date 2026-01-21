@@ -22,7 +22,6 @@ export const App = () => {
             }
         }
     }, [isFetching, data])
-
     return (
         <ThemeProvider theme={theme}>
             <div className={"app"}>
