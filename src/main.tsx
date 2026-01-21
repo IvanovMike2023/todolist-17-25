@@ -1,246 +1,183 @@
-import { App } from "@/app/App"
-import { createRoot } from "react-dom/client"
-import "./index.css"
-import { Provider } from "react-redux"
-import { BrowserRouter } from "react-router"
-import { store } from "./app/store"
-
-createRoot(document.getElementById("root")!).render(
-    <BrowserRouter>
-        <Provider store={store}>
-            <App />
-        </Provider>
-    </BrowserRouter>,
-)
-
-//
-// import { configureStore, createSlice } from "@reduxjs/toolkit"
-// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-// import { useEffect } from "react"
+// import { App } from "@/app/App"
 // import { createRoot } from "react-dom/client"
-// import { Provider, useDispatch, useSelector } from "react-redux"
-// import {isErrorWithMessage} from "@/common/utils";
+// import "./index.css"
+// import { Provider } from "react-redux"
+// import { BrowserRouter } from "react-router"
+// import { store } from "./app/store"
 //
-// // Slice
-// const appSlice = createSlice({
-//     name: "app",
-//     initialState: {
-//         error: null as string | null,
-//     },
-//     reducers: (create) => ({
-//         setError: create.reducer<{ error: string | null }>((state, action) => {
-//             state.error = action.payload.error
-//         }),
-//     }),
-//     selectors: {
-//         selectError: (state) => state.error,
-//     },
-// })
-//
-// const { selectError } = appSlice.selectors
-// const { setError } = appSlice.actions
-//
-// // Api
-// type Post = {
-//     body: string
-//     id: string
-//     title: string
-//     userId: string
-// }
-//
-// type Error = {
-//     errors: { field: string; message: string }[]
-// }
-//
-// const api = createApi({
-//     reducerPath: "api",
-//     baseQuery: async (args, api, extraOptions) => {
-//         const result = await fetchBaseQuery({
-//             baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/",
-//         })(args, api, extraOptions)
-//
-//         if (result.error) {
-//             if (result.error.status === 400) {
-//                 console.log((result.error.data as Error).errors[0].message)
-//                 const error = (result.error.data as Error).errors[0].message
-//                 api.dispatch(setError({ error }))
-//             }
-//         }
-//         return result
-//     },
-//     tagTypes: ["Post"],
-//     endpoints: (builder) => ({
-//         getPosts: builder.query<Post[], void>({
-//             query: () => "posts",
-//             providesTags: ["Post"],
-//         }),
-//         removePost: builder.mutation<{ message: string }, string>({
-//             query: (id) => ({
-//                 method: "DELETE",
-//                 url: `posts/${id}?delay=20`,
-//             }),
-//             invalidatesTags: ["Post"],
-//         }),
-//     }),
-// })
-//
-// const { useGetPostsQuery, useRemovePostMutation } = api
-//
-// // UI
-// const Header = () => <div style={{ width: "100%", background: "gray", border: "none", height: "50px" }}>header</div>
-//
-// const LinearProgress = () => (
-//     <hr
-//         style={{
-//             height: "10px",
-//             width: "100%",
-//             background: "lightblue",
-//             border: "none",
-//             position: "absolute",
-//             left: "0px",
-//             top: "50px",
-//             right: "0px",
-//         }}
-//     />
+// createRoot(document.getElementById("root")!).render(
+//     <BrowserRouter>
+//         <Provider store={store}>
+//             <App />
+//         </Provider>
+//     </BrowserRouter>,
 // )
 //
+// import { configureStore } from "@reduxjs/toolkit"
+// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+// import { createRoot } from "react-dom/client"
+// import { Provider } from "react-redux"
+// import {setupListeners} from "@reduxjs/toolkit/query";
+//
+// type Comment = {
+//     postId: string
+//     id: string
+//     name: string
+//     email: string
+//     body: string
+// }
+//
+// // Api
+// const api = createApi({
+//     reducerPath: "commentsApi",
+//     tagTypes: ["Comment"],
+//     baseQuery: fetchBaseQuery({ baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/" }),
+//     endpoints: (builder) => ({
+//         getComments: builder.query<Comment[], void>({
+//             query: () => "comments",
+//             providesTags: ["Comment"],
+//         }),
+//         addComment: builder.mutation<Comment, string>({
+//             query: (title) => ({
+//                 method: "POST",
+//                 url: "comments",
+//                 body: { body: title },
+//             }),
+//             invalidatesTags: ["Comment"],
+//         }),
+//     }),
+// })
+//
+// const { useGetCommentsQuery, useAddCommentMutation } = api
+//
+// // App.tsx
 // const App = () => {
-//     const error = useSelector(selectError)
+//     const { data } = useGetCommentsQuery(undefined, { refetchOnFocus: true })
+//     const [addComment] = useAddCommentMutation()
 //
-//     const dispatch = useDispatch()
-//
-//     useEffect(() => {
-//         setTimeout(() => {
-//             dispatch(setError({ error: null }))
-//         }, 4000)
-//     }, [error])
-//
-//     return (
-//         <>
-//             <Header />
-//             {error && <h1 style={{ color: "red" }}>{error}</h1>}
-//             <Posts />
-//         </>
-//     )
-// }
-//
-// const Posts = () => {
-//     const { data, isSuccess, isLoading: isPostsLoading } = useGetPostsQuery()
-//     const [removePost, { isLoading: isRemovePostLoading }] = useRemovePostMutation()
-//
-//     const deletePostHandler = (id: string) => {
-//         removePost(id)
-//     }
-//
-//     if (isPostsLoading || isRemovePostLoading) {
-//         return <LinearProgress />
+//     const addCommentHandler = () => {
+//         addComment("Тестовая строка. Ее менять не нужно")
 //     }
 //
 //     return (
 //         <>
-//             {isSuccess && (
-//                 <>
-//                     <h2>Posts</h2>
-//                     {data?.map((el) => {
-//                         return (
-//                             <div key={el.id} style={{ display: "flex", alignItems: "center" }}>
-//                                 <div style={{ border: "1px solid", margin: "5px", padding: "5px", width: "200px" }}>
-//                                     <p>
-//                                         <b>title</b> - {el.title}
-//                                     </p>
-//                                 </div>
-//                                 <button onClick={() => deletePostHandler(el.id)}>Delete post</button>
-//                             </div>
-//                         )
-//                     })}
-//                 </>
-//             )}
+//             <button onClick={addCommentHandler}>Add comment</button>
+//             {data
+//                 ?.slice()
+//                 .reverse()
+//                 .map((comment) => {
+//                     return (
+//                         <div key={comment.id} style={{ border: "1px solid", margin: "5px", padding: "5px" }}>
+//                             <p>body - {comment.body}</p>
+//                         </div>
+//                     )
+//                 })}
 //         </>
 //     )
 // }
 //
-// // Store
+// // store.ts
 // const store = configureStore({
 //     reducer: {
-//         [appSlice.name]: appSlice.reducer,
 //         [api.reducerPath]: api.reducer,
 //     },
 //     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
-// })
 //
+// })
+// setupListeners(store.dispatch)
 // createRoot(document.getElementById("root")!).render(
 //     <Provider store={store}>
 //         <App />
 //     </Provider>,
 // )
+//++++++
+// На 39 строке добавлен refetchOnFocus.
+// Но если открыть приложение в двух вкладках, добавить комментарий в одной вкладке,
+// а потом перейти на другую, то нового комментария вы не увидите 🥲
+// Ваша задача разобраться с тем, почему refetchOnFocus не работает.
 
-// 📜 Описание:
-// Нажмите на кнопку удаления поста. Пост не удалится.
+// Что необходимо дописать в коде чтобы, починить refetchOnFocus ?
+// 💡Если понадобится что-то импортировать для решения данной задачи,
+// то импортируйте. В ответе добавленный импорт указывать не надо
 
-// 🪛 Задача:
-// Ваша задача состоит в том, что разобраться почему пост не удаляется и вывести сообщение
-// об ошибке на экран.
-// Что нужно написать вместо "❗X" для того, чтобы при удалении поста он увидел ошибку
-// ❗ Для типизации ошибки используйте type assertion с типом Error
+//  В качестве ответа укажите добавленный код
 
 //
-// import { configureStore } from "@reduxjs/toolkit"
-// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+//
+
+//
 // import { createRoot } from "react-dom/client"
-// import { Provider, useDispatch } from "react-redux"
+// import { useState } from "react"
+// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+// import { configureStore, nanoid } from "@reduxjs/toolkit"
+// import { Provider } from "react-redux"
 //
 // type User = {
-//     id: string
+//     id: number
 //     name: string
 //     age: number
 // }
 //
-// type UsersResponse = {
-//     items: User[]
+// type UserResponse = {
 //     totalCount: number
+//     items: User[]
 // }
 //
 // // Api
 // const api = createApi({
 //     reducerPath: "api",
 //     baseQuery: fetchBaseQuery({ baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/" }),
-//     endpoints: (builder) => {
-//         return {
-//             getUsers: builder.query<UsersResponse, void>({
-//                 query: () => "users",
-//             }),
-//         }
-//     },
+//     endpoints: (builder) => ({
+//         getUsers: builder.query<UserResponse,{ pageSize: number, pageNumber: number }>({
+//             query: (params) => {
+//                 const { pageSize, pageNumber } = params;
+//                 return {
+//                     url: `users`,
+//                     params: { pageSize, pageNumber }
+//                 }
+//             },
+//         }),
+//     }),
 // })
 //
 // const { useGetUsersQuery } = api
 //
-// // Users.tsx
-// const Users = () => {
-//     const { data } = useGetUsersQuery()
+// // App
+// const PAGE_SIZE = 3
 //
-//     const dispatch = useAppDispatch()
+// export const App = () => {
+//     const [currentPage, setCurrentPage] = useState(1)
 //
-//     const addSmileHandler = (id: string) => {
-//         const smile = "😁"
-//         dispatch(api.util.updateQueryData('getUsers', undefined, (state) => {
-//             const item= state.items.find((t) => t.id === id)
-//             if(item){
-//                 console.log(item.name)
-//                 item.name=`${item.name}${smile}`
-//             }
-//         }))
-//         // ❗❗❗XXX❗❗❗
+//     const { data } = useGetUsersQuery({ pageSize: PAGE_SIZE, pageNumber: currentPage })
+//
+//     const setPageHandler = (page: number) => {
+//         setCurrentPage(page)
 //     }
+//
+//     const length = data?.totalCount ? Math.ceil(data?.totalCount / PAGE_SIZE) : 1
+//     const buttons = Array.from({ length }, (_, i) => ({
+//         id: nanoid(),
+//         title: i + 1,
+//     }))
 //
 //     return (
 //         <>
-//             <h1>Users</h1>
-//             {data?.items.map((el) => (
-//                 <div key={el.id}>
-//                     name - <b>{el.name}</b>
-//                     <button onClick={() => addSmileHandler(el.id)}>Add smile</button>
+//             <h1>👪 Список пользователей</h1>
+//             {data?.items.map((u) => (
+//                 <div style={{ marginBottom: "15px" }} key={u.id}>
+//                     <b>name</b>: {u.name}
+//                     <b>age</b>: {u.age}
 //                 </div>
+//             ))}
+//
+//             {buttons.map((b) => (
+//                 <button
+//                     key={b.id}
+//                     style={b.title === currentPage ? { backgroundColor: "lightblue" } : {}}
+//                     onClick={() => setPageHandler(b.title)}
+//                 >
+//                     {b.title}
+//                 </button>
 //             ))}
 //         </>
 //     )
@@ -252,92 +189,119 @@ createRoot(document.getElementById("root")!).render(
 //     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
 // })
 //
-// type AppDispatch = typeof store.dispatch
-// const useAppDispatch = useDispatch.withTypes<AppDispatch>()
-//
 // createRoot(document.getElementById("root")!).render(
 //     <Provider store={store}>
-//         <Users />
+//         <App />
 //     </Provider>,
 // )
 
 // 📜 Описание:
-// Откройте redux devtools и убедитесь, что данные из запроса хранятся в кеше
-// http://surl.li/veofpd
-// 🪛 Задача:
-// При нажатии на кнопку `Add smile` необходимо изменить данные в кеше и добавить к имени переменную
-// smile
-// Результат: http://surl.li/kgmhtn
-// Что нужно написать вместо `// ❗❗❗XXX❗❗❗`, чтобы реализовать данную задачу
-// ❗Изменение стейта должно быть написано мутабельным образом
-// ❗updateRecipe коллбек в качетстве аргумента принимает стейт. Назовите эту переменную state
+// При загрузке приложения отрисовывается список пользователей.
+// Но если перейти на другие страницы, вы увидите, что пагинация не работает
+
+// Перепишите getUsers таким образом, чтобы пагинация отрабатывала верно
+// ❗Типизацию указывать обязательно
+// ❗Очередность применения query параметров:
+//  Первым: pageSize, вторым pageNumber.
+// Это касается и типизации и все остальных участках кода,
+// если вам понадобится доставать эти параметры
+
+// Пример ответа
+// getUsers: builder.query<{pageSize: any, pageNumber: any}>({
+//   query: () => {
+//     return {
+//       url: `users`,
+//     }
+//   },
+// }),
 //
 //
 // import { configureStore } from "@reduxjs/toolkit"
 // import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 // import { createRoot } from "react-dom/client"
 // import { Provider } from "react-redux"
+// import { useState } from "react"
 //
-// // Types
-// type Todolist = {
+// type Post = {
+//     body: string
 //     id: string
 //     title: string
-//     order: number
-//     createdAt: string
-//     updatedAt: string
-//     completed: boolean
+//     userId: string
 // }
 //
+// // Api
 // const api = createApi({
 //     reducerPath: "api",
-//     baseQuery: async (args, api, extraOptions) => {
-//         await new Promise((resolve) => setTimeout(resolve, 1000)) // Эмуляция задержки
-//
-//         return fetchBaseQuery({ baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/" })(args, api, extraOptions)
-//     },
-//     endpoints: (builder) => {
-//         const url = Math.random() < 0.5 ? "todos" : "todos👺"
-//         return {
-//             todolists: builder.query<Todolist[], void>({
-//                 query: () => url,
+//     tagTypes: ["Post"],
+//     baseQuery: fetchBaseQuery({ baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api" }),
+//     endpoints: (builder) => ({
+//         getPosts: builder.query<Post[], void>({
+//             query: () => "posts",
+//             providesTags: ["Post"],
+//         }),
+//         removePost: builder.mutation<{ message: string }, string>({
+//             query: (id) => ({
+//                 method: "DELETE",
+//                 url: `posts/${id}?delay=3`,
 //             }),
-//         }
-//     },
+//             async onQueryStarted(id, { queryFulfilled, dispatch }) {
+//                 const patchResult = dispatch(
+//                     api.util.updateQueryData("getPosts", undefined, (state) => {
+//                         const index = state.findIndex((post) => post.id === id)
+//                         if (index !== -1) {
+//                             state.splice(index, 1)
+//                         }
+//                     }),
+//                 )
+//                 try {
+//                     // ❗❗❗XXX ❗❗❗
+//                    await queryFulfilled
+//                 } catch (error) {
+//                     patchResult.undo()
+//                     // ❗❗❗YYY ❗❗❗
+//                 }
+//             },
+//             invalidatesTags: ["Post"],
+//         }),
+//     }),
 // })
 //
-// const { useTodolistsQuery } = api
+// const { useGetPostsQuery, useRemovePostMutation } = api
 //
-// // Component
+// // App.tsx
 // const App = () => {
-//     // ❗Использовать деструктуризацию запрещено
-//     const data = useTodolistsQuery()
-//     console.log(data)
+//     const { data } = useGetPostsQuery()
+//     const [removePost] = useRemovePostMutation()
+//
+//     const [loadingId, setLoadingId] = useState<string | null>(null)
+//
+//     const removePostHandler = (id: string) => {
+//         setLoadingId(id)
+//         removePost(id).finally(() => {
+//             setLoadingId(null)
+//         })
+//     }
+//
 //     return (
 //         <>
-//             {
-//                 <>
-//                     {data.data?.map((t) => {
-//                         return (
-//                             <div style={t.completed ? { color: "grey" } : {}} key={t.id}>
-//                                 <input type="checkbox" checked={t.completed} />
-//                                 <b>Описание</b>: {t.title}
-//                             </div>
-//                         )
-//                     })}
-//                 </>
-//             }
-//             {data.isLoading && <h2>Загрузка...</h2>}
-//             {data.isSuccess && <h2>👩‍💻 Секретный код: BHOlh#</h2>}
-//             {data.isError && <h2> Error: 👺👺👺</h2>}
+//             {data?.map((el) => {
+//                 return (
+//                     <div key={el.id} style={{ display: "flex", alignItems: "center" }}>
+//                         {loadingId === el.id && <h3>Loading...</h3>}
+//                         <div style={{ border: "1px solid", margin: "5px", padding: "5px", width: "200px" }}>
+//                             <b>title</b> - {el.title}
+//                         </div>
+//                         <button onClick={() => removePostHandler(el.id)}>X</button>
+//                     </div>
+//                 )
+//             })}
 //         </>
 //     )
 // }
 //
-// // Store
+// // store.ts
 // const store = configureStore({
-//     reducer: {
-//         [api.reducerPath]: api.reducer,
-//     },
+//     reducer: { [api.reducerPath]: api.reducer },
 //     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
 // })
 //
@@ -347,15 +311,97 @@ createRoot(document.getElementById("root")!).render(
 //     </Provider>,
 // )
 
-// 📜 Описание:
-// Тудулисты с вероятностью в 50% подгружаюся успешно или падают с ошибкой.
-// Но изначально на экране мы видим: Загрузку, секретный код и сообщение об ошибке
+// Optimistic update для удаления поста почти реализован.
+// Что необходимо написать вместо // ❗❗❗XXX ❗❗❗ и // ❗❗❗YYY ❗❗❗
+// для последующего отката изменений в случае ошибки при запросе на сервер?
 
-// 🪛 Задача:
-// Что нужно написать вместо "❗X","❗Y" и "❗Z" для того, чтобы:
-// 1. Загрузка показывалась только во время загрузки
-// 2. Секретный код показывалась только если запрос прошел успешно
-// 3. Ошибка показывалась только в случае ошибки
 
-// ❗ Ответ дайте через пробел
-// 🖥 Пример ответа: one two three
+
+
+
+
+import { configureStore } from "@reduxjs/toolkit"
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { createRoot } from "react-dom/client"
+import { Provider } from "react-redux"
+
+type Comment = {
+    postId: string
+    id: string
+    name: string
+    email: string
+    body: string
+}
+
+// Api
+const api = createApi({
+    reducerPath: "commentsApi",
+    tagTypes: ["Comment"],
+    baseQuery: fetchBaseQuery({ baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/" }),
+    endpoints: (builder) => ({
+        getComments: builder.query<Comment[], void>({
+            query: () => "comments",
+            providesTags: ["Comment"],
+            transformResponse: (response: Comment[]) => {
+                //console.log(response)
+                //console.log(response.reverse())
+               return  response.slice().reverse()
+            },
+            // ❗❗❗XXX ❗❗❗
+        }),
+        addComment: builder.mutation<Comment, string>({
+            query: (title) => ({
+                method: "POST",
+                url: "comments",
+                body: { body: title },
+            }),
+            invalidatesTags: ["Comment"],
+        }),
+    }),
+})
+
+const { useGetCommentsQuery, useAddCommentMutation } = api
+
+// App.tsx
+const App = () => {
+    const { data } = useGetCommentsQuery()
+    const [addComment] = useAddCommentMutation()
+
+    const addCommentHandler = () => {
+        addComment("Тестовая строка. Ее менять не нужно")
+    }
+
+    return (
+        <>
+            <button onClick={addCommentHandler}>Add comment</button>
+            {data?.map((comment) => {
+                return (
+                    <div key={comment.id} style={{ border: "1px solid", margin: "5px", padding: "5px" }}>
+                        <p>body - {comment.body}</p>
+                    </div>
+                )
+            })}
+        </>
+    )
+}
+
+// store.ts
+const store = configureStore({
+    reducer: {
+        [api.reducerPath]: api.reducer,
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
+})
+
+createRoot(document.getElementById("root")!).render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+)
+
+// Нажмите на кнопку Add comment и убедитесь в том, что запрос проходит и новый комментарий добавляется
+// Но проблема в том, что новый комментарий добавляется в конец массива
+
+// Что необходимо написать вместо // ❗❗❗XXX ❗❗❗,
+// чтобы поменять порядок элементов массива. Чтобы каждый новый добавленный комментарий
+// отображался в начале массива
