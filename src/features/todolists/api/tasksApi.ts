@@ -24,20 +24,36 @@ export const tasksApi = baseApi.injectEndpoints({
                 }
             },
             onQueryStarted: async ({todolistId, taskId, model}, {getState,dispatch, queryFulfilled}) => {
+
                 const args = tasksApi.util.selectCachedArgsForQuery(getState(), 'getTask')
-                const patchResult = dispatch(tasksApi.util.updateQueryData('getTask', {
-                    todolistId,
-                    params: {page: 1}
-                }, (state) => {
-                    const index = state.items.findIndex(todo => todo.id === taskId)
-                    if (index !== -1) {
-                        state.items[index] = {...state.items[index], ...model}
-                    }
-                }))
+                const patchResults:any[]=[]
+                args.forEach((arg)=>{
+                    patchResults.push(dispatch(tasksApi.util.updateQueryData('getTask', {
+                        todolistId,
+                        params: {page: arg.params.page}
+                    }, (state) => {
+                        const index = state.items.findIndex(todo => todo.id === taskId)
+                        if (index !== -1) {
+                            state.items[index] = {...state.items[index], ...model}
+                        }
+                    })))
+                })
+                // const patchResult = dispatch(tasksApi.util.updateQueryData('getTask', {
+                //     todolistId,
+                //     params: {page: 1}
+                // }, (state) => {
+                //     const index = state.items.findIndex(todo => todo.id === taskId)
+                //     if (index !== -1) {
+                //         state.items[index] = {...state.items[index], ...model}
+                //     }
+                // }))
                 try {
                     await queryFulfilled
                 } catch (e) {
-                    patchResult.undo()
+                    patchResults.forEach((patchResult)=>{
+                        patchResult.undo()
+                    })
+
                 }
             },
             invalidatesTags: (_res, _err, {todolistId}) =>
