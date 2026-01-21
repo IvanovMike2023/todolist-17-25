@@ -23,7 +23,8 @@ export const tasksApi = baseApi.injectEndpoints({
                     body: model
                 }
             },
-            onQueryStarted: async ({todolistId, taskId, model}, {dispatch, queryFulfilled}) => {
+            onQueryStarted: async ({todolistId, taskId, model}, {getState,dispatch, queryFulfilled}) => {
+                const args = tasksApi.util.selectCachedArgsForQuery(getState(), 'getTask')
                 const patchResult = dispatch(tasksApi.util.updateQueryData('getTask', {
                     todolistId,
                     params: {page: 1}
