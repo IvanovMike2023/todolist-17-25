@@ -1,17 +1,20 @@
-// import { App } from "@/app/App"
-// import { createRoot } from "react-dom/client"
-// import "./index.css"
-// import { Provider } from "react-redux"
-// import { BrowserRouter } from "react-router"
-// import { store } from "./app/store"
-//
-// createRoot(document.getElementById("root")!).render(
-//     <BrowserRouter>
-//         <Provider store={store}>
-//             <App />
-//         </Provider>
-//     </BrowserRouter>,
-// )
+import { App } from "@/app/App"
+import { createRoot } from "react-dom/client"
+import "./index.css"
+import { Provider } from "react-redux"
+import { BrowserRouter } from "react-router"
+import { store } from "./app/store"
+
+createRoot(document.getElementById("root")!).render(
+    <BrowserRouter>
+        <Provider store={store}>
+            <App />
+        </Provider>
+    </BrowserRouter>,
+)
+
+
+
 //
 // import { configureStore } from "@reduxjs/toolkit"
 // import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
@@ -318,86 +321,86 @@
 
 
 
-
-
-import { configureStore } from "@reduxjs/toolkit"
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import { createRoot } from "react-dom/client"
-import { Provider } from "react-redux"
-
-type Comment = {
-    postId: string
-    id: string
-    name: string
-    email: string
-    body: string
-}
-
-// Api
-const api = createApi({
-    reducerPath: "commentsApi",
-    tagTypes: ["Comment"],
-    baseQuery: fetchBaseQuery({ baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/" }),
-    endpoints: (builder) => ({
-        getComments: builder.query<Comment[], void>({
-            query: () => "comments",
-            providesTags: ["Comment"],
-            transformResponse: (response: Comment[]) => {
-                //console.log(response)
-                //console.log(response.reverse())
-               return  response.slice().reverse()
-            },
-            // ❗❗❗XXX ❗❗❗
-        }),
-        addComment: builder.mutation<Comment, string>({
-            query: (title) => ({
-                method: "POST",
-                url: "comments",
-                body: { body: title },
-            }),
-            invalidatesTags: ["Comment"],
-        }),
-    }),
-})
-
-const { useGetCommentsQuery, useAddCommentMutation } = api
-
-// App.tsx
-const App = () => {
-    const { data } = useGetCommentsQuery()
-    const [addComment] = useAddCommentMutation()
-
-    const addCommentHandler = () => {
-        addComment("Тестовая строка. Ее менять не нужно")
-    }
-
-    return (
-        <>
-            <button onClick={addCommentHandler}>Add comment</button>
-            {data?.map((comment) => {
-                return (
-                    <div key={comment.id} style={{ border: "1px solid", margin: "5px", padding: "5px" }}>
-                        <p>body - {comment.body}</p>
-                    </div>
-                )
-            })}
-        </>
-    )
-}
-
-// store.ts
-const store = configureStore({
-    reducer: {
-        [api.reducerPath]: api.reducer,
-    },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
-})
-
-createRoot(document.getElementById("root")!).render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-)
+//
+//
+// import { configureStore } from "@reduxjs/toolkit"
+// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+// import { createRoot } from "react-dom/client"
+// import { Provider } from "react-redux"
+//
+// type Comment = {
+//     postId: string
+//     id: string
+//     name: string
+//     email: string
+//     body: string
+// }
+//
+// // Api
+// const api = createApi({
+//     reducerPath: "commentsApi",
+//     tagTypes: ["Comment"],
+//     baseQuery: fetchBaseQuery({ baseUrl: "https://exams-frontend.kimitsu.it-incubator.io/api/" }),
+//     endpoints: (builder) => ({
+//         getComments: builder.query<Comment[], void>({
+//             query: () => "comments",
+//             providesTags: ["Comment"],
+//             transformResponse: (response: Comment[]) => {
+//                 //console.log(response)
+//                 //console.log(response.reverse())
+//                return  response.slice().reverse()
+//             },
+//             // ❗❗❗XXX ❗❗❗
+//         }),
+//         addComment: builder.mutation<Comment, string>({
+//             query: (title) => ({
+//                 method: "POST",
+//                 url: "comments",
+//                 body: { body: title },
+//             }),
+//             invalidatesTags: ["Comment"],
+//         }),
+//     }),
+// })
+//
+// const { useGetCommentsQuery, useAddCommentMutation } = api
+//
+// // App.tsx
+// const App = () => {
+//     const { data } = useGetCommentsQuery()
+//     const [addComment] = useAddCommentMutation()
+//
+//     const addCommentHandler = () => {
+//         addComment("Тестовая строка. Ее менять не нужно")
+//     }
+//
+//     return (
+//         <>
+//             <button onClick={addCommentHandler}>Add comment</button>
+//             {data?.map((comment) => {
+//                 return (
+//                     <div key={comment.id} style={{ border: "1px solid", margin: "5px", padding: "5px" }}>
+//                         <p>body - {comment.body}</p>
+//                     </div>
+//                 )
+//             })}
+//         </>
+//     )
+// }
+//
+// // store.ts
+// const store = configureStore({
+//     reducer: {
+//         [api.reducerPath]: api.reducer,
+//     },
+//     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
+// })
+//
+// createRoot(document.getElementById("root")!).render(
+//     <Provider store={store}>
+//         <App />
+//     </Provider>,
+// )
 
 // Нажмите на кнопку Add comment и убедитесь в том, что запрос проходит и новый комментарий добавляется
 // Но проблема в том, что новый комментарий добавляется в конец массива
