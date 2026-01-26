@@ -13,8 +13,6 @@ createRoot(document.getElementById("root")!).render(
     </BrowserRouter>,
 )
 
-
-
 //
 // import { configureStore } from "@reduxjs/toolkit"
 // import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
