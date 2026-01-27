@@ -12,7 +12,6 @@ type Props = {
     todolist: any
 }
 export const Tasks = ({todolist}: Props) => {
-
     const [page, setPage] = useState(1)
     const {data, isLoading} = useGetTaskQuery({todolistId: todolist.id, params: {page}})
     if (isLoading) {
