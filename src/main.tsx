@@ -1,17 +1,21 @@
-import { App } from "@/app/App"
-import { createRoot } from "react-dom/client"
-import "./index.css"
-import { Provider } from "react-redux"
-import { BrowserRouter } from "react-router"
-import { store } from "./app/store"
+// import { App } from "@/app/App"
+// import { createRoot } from "react-dom/client"
+// import "./index.css"
+// import { Provider } from "react-redux"
+// import { BrowserRouter } from "react-router"
+// import { store } from "./app/store"
+//
+// createRoot(document.getElementById("root")!).render(
+//     <BrowserRouter>
+//         <Provider store={store}>
+//             <App />
+//         </Provider>
+//     </BrowserRouter>,
+// )
+//
+//
 
-createRoot(document.getElementById("root")!).render(
-    <BrowserRouter>
-        <Provider store={store}>
-            <App />
-        </Provider>
-    </BrowserRouter>,
-)
+
 
 //
 // import { configureStore } from "@reduxjs/toolkit"
@@ -315,8 +319,6 @@ createRoot(document.getElementById("root")!).render(
 // Optimistic update для удаления поста почти реализован.
 // Что необходимо написать вместо // ❗❗❗XXX ❗❗❗ и // ❗❗❗YYY ❗❗❗
 // для последующего отката изменений в случае ошибки при запросе на сервер?
-
-
 
 
 //
