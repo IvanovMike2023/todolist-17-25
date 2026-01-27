@@ -10,7 +10,7 @@ export function SortableItem({ id, children }: Props ) {
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
-        padding: '10px',
+        padding: '0px 10px 10px 10px',
         border: '1px solid #ccc',
         marginBottom: '5px',
         backgroundColor: 'white',

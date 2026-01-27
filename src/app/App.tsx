@@ -13,7 +13,6 @@ export const App = () => {
     const themeMode = useAppSelector(selectThemeMode)
     const dispatch = useAppDispatch()
     const theme = getTheme(themeMode)
-
     const { data, isFetching  } = useMeQuery()
     useEffect(() => {
         if (!isFetching) {

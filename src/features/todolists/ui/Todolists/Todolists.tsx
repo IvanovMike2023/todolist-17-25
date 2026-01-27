@@ -17,6 +17,11 @@ import Grid from "@mui/material/Grid";
 import {TodolistItem} from "@/features/todolists/ui/Todolists/TodolistItem/TodolistItem";
 import Box from "@mui/material/Box";
 import {SortableItem} from "@/common/SortableItem/SortableItem";
+import {getTheme} from "@/common/theme";
+import {useAppSelector} from "@/common/hooks";
+import {selectThemeMode} from "@/app/app-slice";
+import {TodolistSkeleton} from "@/features/todolists/ui/Todolists/TodolistSkeleton/TodolistSkeleton";
+import {loginSchema} from "@/features/auth/lib/schemas";
 
 
 export const Todolists = () => {
@@ -43,7 +48,7 @@ export const Todolists = () => {
     }, [todolists]);
 
     if (isLoading) {
-        return <Box sx={containerSx} style={{gap: "32px"}}>{/* Скелетоны */}</Box>;
+        return <Box sx={containerSx} style={{gap: "32px"}}>{<TodolistSkeleton/>}</Box>;
     }
 
     // Правильный тип события - DragEndEvent
@@ -65,9 +70,9 @@ export const Todolists = () => {
                 <Grid container spacing={4} sx={containerSx}>
                     {items.map((todolist) => (
                         <Grid key={todolist.id} size={{xs: 12, md: 6, lg: 4}}>
-                            <Paper sx={{p: "0 20px 20px 20px"}}>
+                            <Paper sx={{p:  "0 20px 20px 20px"}}>
                                 <SortableItem id={todolist.id}>
-                                    <TodolistItem todolist={todolist}/>
+                                    <TodolistItem  todolist={todolist}/>
                                 </SortableItem>
                             </Paper>
                         </Grid>
