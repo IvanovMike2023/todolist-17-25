@@ -6,8 +6,8 @@ import {Routing} from "@/common/routing"
 import {getTheme} from "@/common/theme"
 import CssBaseline from "@mui/material/CssBaseline"
 import {ThemeProvider} from "@mui/material/styles"
-import React, {useEffect} from "react";
 import {useMeQuery} from "@/features/auth/api/authApi";
+import {useEffect} from "react";
 
 export const App = () => {
     const themeMode = useAppSelector(selectThemeMode)
