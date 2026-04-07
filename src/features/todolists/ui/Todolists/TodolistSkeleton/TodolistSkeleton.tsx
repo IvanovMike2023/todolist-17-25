@@ -10,6 +10,7 @@ export const TodolistSkeleton = () => (
             <Skeleton width={150} height={50} />
             <Skeleton width={20} height={40} />
         </div>
+
         <div className={styles.createItemForm}>
             <Skeleton width={230} height={60} />
             <Skeleton width={20} height={40} />
