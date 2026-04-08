@@ -3,7 +3,7 @@ import Box from "@mui/material/Box"
 import Paper from "@mui/material/Paper"
 import Skeleton from "@mui/material/Skeleton"
 import styles from "./TodolistSkeleton.module.css"
-
+//hot loading
 export const TodolistSkeleton = () => (
     <Paper className={styles.container}>
         <div className={styles.title}>
