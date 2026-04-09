@@ -7,9 +7,29 @@ import {getTheme} from "@/common/theme"
 import CssBaseline from "@mui/material/CssBaseline"
 import {ThemeProvider} from "@mui/material/styles"
 import {useMeQuery} from "@/features/auth/api/authApi";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 export const App = () => {
+    type Pokemon={
+        name:string,
+        url:string
+    }
+    const usePokemons=()=>{
+        const  [name,setName]=useState('')
+        const getPokemon=async (name:string)=>{
+            const res = await fetch('https://pokeapi.co/api/v2/pokemon/')
+            const data=await res.json()
+            console.log(data.results.filter((f:Pokemon)=>f.name===name))
+      return  setName(data.results.filter((f:Pokemon)=>f.name===name)[0].name)
+        }
+        return {name,getPokemon}
+    }
+    const {name,getPokemon}=usePokemons()
+    console.log(name)
+    //getPokemon('bulbasaur')
+    useEffect(()=>{
+        getPokemon('bulbasaur')
+    },[])
     const themeMode = useAppSelector(selectThemeMode)
     const dispatch = useAppDispatch()
     const theme = getTheme(themeMode)
