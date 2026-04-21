@@ -23,6 +23,11 @@ export const App = () => {
             }
         }
     }, [isFetching, data])
+
+    const id = Symbol('id');
+    console.log(id)
+
+    //console.log(expires)
     return (
         <ThemeProvider theme={theme}>
             <div className={"app"}>
