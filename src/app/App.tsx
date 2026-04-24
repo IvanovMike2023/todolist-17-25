@@ -28,7 +28,6 @@ export const App = () => {
     console.log(id)
 
 
-    //console.log(expires)
     return (
         <ThemeProvider theme={theme}>
             <div className={"app"}>
